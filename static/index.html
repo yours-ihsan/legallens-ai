@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LegalLens AI — Grounded Legal Intelligence</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- ============ HEADER ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <!-- shield + scales-of-justice emblem -->
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.4 19.2 5v5.5c0 4.35-3 7.45-7.2 8.85C7.8 17.95 4.8 14.85 4.8 10.5V5L12 2.4Z"/>
+          <circle cx="12" cy="7.6" r=".9" fill="currentColor" stroke="none"/>
+          <path d="M12 8.6v6.2M9.9 14.8h4.2M9.5 10.6h5"/>
+          <path d="M9.5 10.6v1.6M7.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+          <path d="M14.5 10.6v1.6M12.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">LegalLens <span class="gold">AI</span></div>
+        <div class="brand-sub">Grounded Legal Intelligence</div>
+      </div>
+    </div>
+
+    <nav class="pipeline" id="pipeline" aria-label="Grounding pipeline">
+      <div class="pipe-step" data-step="document"><span class="pipe-dot" data-num="1">1</span><span class="pipe-label">Document</span></div>
+      <div class="pipe-line"></div>
+      <div class="pipe-step" data-step="retrieve"><span class="pipe-dot" data-num="2">2</span><span class="pipe-label">Retrieve</span></div>
+      <div class="pipe-line"></div>
+      <div class="pipe-step" data-step="verify"><span class="pipe-dot" data-num="3">3</span><span class="pipe-label">Verify</span></div>
+      <div class="pipe-line"></div>
+      <div class="pipe-step" data-step="answer"><span class="pipe-dot" data-num="4">4</span><span class="pipe-label">Answer</span></div>
+    </nav>
+
+    <div class="sys-status" id="sysStatus" title="">
+      <span class="sys-dot" id="sysDot"></span>
+      <div class="sys-text">
+        <span class="sys-line1" id="sysLine1">CONNECTING</span>
+        <span class="sys-line2" id="sysLine2">checking backend…</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ LEFT SIDEBAR — CASE WORKSPACE ============ -->
+    <aside class="sidebar">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Case Workspace</h2>
+          <span class="count" id="docCount"></span>
+        </div>
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload a PDF document">
+          <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden />
+          <div class="dz-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+              <path d="M14 3v5h5" />
+              <path d="M12 17v-5M9.6 14.2 12 11.8l2.4 2.4" />
+            </svg>
+          </div>
+          <span class="dz-cta">Upload PDF</span>
+          <div class="dz-sub">or drag &amp; drop a file here · max 50 MB</div>
+        </div>
+        <div id="uploadStatus" class="upload-status" hidden></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Documents</h2></div>
+        <ul id="docList" class="doc-list"></ul>
+        <div id="docEmpty" class="doc-empty">
+          <div class="de-icon" aria-hidden="true">§</div>
+          <p>No documents in the workspace.</p>
+          <p class="muted">Upload a PDF to open a case.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Grounding Pipeline</h2></div>
+        <ul class="check-list">
+          <li id="chkIndexed" class="pending"><span class="check">○</span> Document indexed</li>
+          <li><span class="check">✓</span> Evidence retrieval enabled</li>
+          <li><span class="check">✓</span> Source verification enabled</li>
+          <li><span class="check">✓</span> Hallucination refusal enabled</li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- ============ CENTER — MAIN WORKSPACE ============ -->
+    <section class="workspace">
+      <div class="view-tabs" role="tablist" aria-label="Workspace views">
+        <button type="button" class="view-tab active" id="tabChat" role="tab"
+                aria-selected="true" aria-controls="chatView">
+          <span class="vt-icon" aria-hidden="true">⚖</span> Grounded Chat
+        </button>
+        <button type="button" class="view-tab" id="tabDraft" role="tab"
+                aria-selected="false" aria-controls="draftView">
+          <span class="vt-icon" aria-hidden="true">✎</span> Legal Drafting
+        </button>
+        <button type="button" class="view-tab" id="tabResearch" role="tab"
+                aria-selected="false" aria-controls="researchView">
+          <span class="vt-icon" aria-hidden="true">§</span> Legal Research
+        </button>
+        <button type="button" class="view-tab" id="tabEval" role="tab"
+                aria-selected="false" aria-controls="evalView">
+          <span class="vt-icon" aria-hidden="true">▤</span> Evaluation
+        </button>
+      </div>
+
+      <div class="view-pane active" id="chatView" role="tabpanel" aria-labelledby="tabChat">
+      <div id="messages" class="messages">
+        <div class="welcome" id="welcome">
+          <div class="welcome-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.4 19.2 5v5.5c0 4.35-3 7.45-7.2 8.85C7.8 17.95 4.8 14.85 4.8 10.5V5L12 2.4Z"/>
+              <circle cx="12" cy="7.6" r=".9" fill="currentColor" stroke="none"/>
+              <path d="M12 8.6v6.2M9.9 14.8h4.2M9.5 10.6h5"/>
+              <path d="M9.5 10.6v1.6M7.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+              <path d="M14.5 10.6v1.6M12.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+            </svg>
+          </div>
+          <h1>Ask a question about your legal documents</h1>
+          <p>Answers are grounded in retrieved evidence and linked to their source pages.</p>
+          <div class="welcome-steps" aria-hidden="true">
+            <span>Upload</span><span class="ws-arrow">→</span>
+            <span>Retrieve</span><span class="ws-arrow">→</span>
+            <span>Verify</span><span class="ws-arrow">→</span>
+            <span>Cite</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="askForm" class="ask" autocomplete="off">
+        <div class="ask-box">
+          <input id="question" type="text" maxlength="2000"
+                 placeholder="Ask your legal documents…" aria-label="Question" />
+          <button type="submit" id="askBtn">
+            <span class="ask-spark" aria-hidden="true">✦</span>Ask
+          </button>
+        </div>
+        <div class="ask-hint">Grounded only in retrieved evidence&nbsp; ·&nbsp; page-level citations&nbsp; ·&nbsp; explicit refusal when evidence is insufficient</div>
+      </form>
+      </div><!-- /chatView -->
+
+      <!-- ============ EVALUATION VIEW (results rendered by app.js) ============ -->
+      <div class="view-pane" id="evalView" role="tabpanel" aria-labelledby="tabEval">
+        <div class="eval-scroll">
+          <div class="eval-head">
+            <div class="eval-head-text">
+              <h2 class="eval-title">Grounding Evaluation</h2>
+              <p class="eval-sub">Baseline RAG vs LegalLens Grounded RAG — the share of factual
+                claims traceable to a real source. Every number below is calculated
+                from a live run; nothing is pre-filled.</p>
+            </div>
+            <button type="button" id="evalRunBtn" class="eval-run-btn">Run Groundedness Evaluation</button>
+          </div>
+          <div id="evalStatus" class="eval-status"></div>
+          <div id="evalResults" class="eval-results" hidden></div>
+        </div>
+      </div><!-- /evalView -->
+
+      <!-- ============ LEGAL DRAFTING VIEW (result rendered by app.js) ============ -->
+      <div class="view-pane" id="draftView" role="tabpanel" aria-labelledby="tabDraft">
+        <div class="eval-scroll">
+          <div class="eval-head">
+            <div class="eval-head-text">
+              <h2 class="eval-title">Legal Drafting</h2>
+              <p class="eval-sub"><b>Evidence first → draft second.</b> Every factual statement is
+                traced to the uploaded documents. Anything not present in the sources is reported
+                as missing — never invented.</p>
+            </div>
+          </div>
+
+          <form id="draftForm" class="draft-form" autocomplete="off">
+            <div class="draft-field">
+              <label for="draftSource">Source Document</label>
+              <div id="draftSource" class="draft-source">Checking workspace…</div>
+            </div>
+            <div class="draft-grid">
+              <div class="draft-field">
+                <label for="draftType">Draft Type</label>
+                <select id="draftType">
+                  <option value="bail_application">Bail Application</option>
+                  <option value="petition">Petition</option>
+                  <option value="legal_notice">Legal Notice</option>
+                  <option value="affidavit">Affidavit</option>
+                </select>
+              </div>
+              <div class="draft-field">
+                <label for="draftInstr">Additional Instructions</label>
+                <textarea id="draftInstr" rows="2" maxlength="2000"
+                          placeholder="optional — e.g. keep it concise, focus on the timeline"></textarea>
+              </div>
+            </div>
+            <button type="submit" id="draftBtn" class="eval-run-btn">
+              <span class="ask-spark" aria-hidden="true">✦</span> Generate Draft
+            </button>
+          </form>
+
+          <div id="draftStatus" class="eval-status"></div>
+
+          <div id="draftResult" class="draft-result" hidden>
+            <div class="draft-badge-row">
+              <span id="draftBadge" class="draft-badge"></span>
+              <span id="draftMeta" class="draft-meta"></span>
+            </div>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">A · Generated Draft</div>
+              <pre id="draftBody" class="draft-body"></pre>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">B · Source Evidence</div>
+              <div id="draftSources" class="draft-sources"></div>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">C · Missing Information</div>
+              <ul id="draftMissing" class="draft-missing"></ul>
+              <div id="draftAvailWrap" class="draft-avail-wrap" hidden>
+                <div class="draft-panel-title sub">Available from source</div>
+                <ul id="draftAvailable" class="draft-available"></ul>
+              </div>
+            </section>
+
+            <div id="draftClaims" class="draft-claims" hidden></div>
+          </div>
+        </div>
+      </div><!-- /draftView -->
+
+      <!-- ============ LEGAL RESEARCH VIEW (result rendered by app.js) ============ -->
+      <div class="view-pane" id="researchView" role="tabpanel" aria-labelledby="tabResearch">
+        <div class="eval-scroll">
+          <div class="eval-head">
+            <div class="eval-head-text">
+              <h2 class="eval-title">Legal Research</h2>
+              <p class="eval-sub"><b>Evidence first → verify → reason → answer.</b> The legal issue
+                is identified up front, sources are classified by authority tier, and every
+                law-to-case connection must be verified against the retrieved material — nothing is
+                invented, and an allegation is never presented as established fact.</p>
+            </div>
+          </div>
+
+          <form id="researchForm" class="draft-form" autocomplete="off">
+            <div class="draft-field">
+              <label for="researchSource">Case Documents</label>
+              <div id="researchSource" class="draft-source">Checking workspace…</div>
+            </div>
+            <div class="draft-grid">
+              <div class="draft-field">
+                <label for="researchType">Research Type</label>
+                <select id="researchType">
+                  <option value="law">Law — provisions &amp; statutes</option>
+                  <option value="judgment">Judgment — verified case law</option>
+                  <option value="precedent">Precedent — analogous decisions</option>
+                  <option value="general">General — open research question</option>
+                </select>
+              </div>
+              <div class="draft-field">
+                <label for="researchContext">Case Context <span class="opt">(optional)</span></label>
+                <textarea id="researchContext" rows="2" maxlength="2000"
+                          placeholder="optional — extra case notes (kept out of evidence, never cited)"></textarea>
+              </div>
+            </div>
+            <div class="draft-field">
+              <label for="researchQuestion">Research Question</label>
+              <textarea id="researchQuestion" rows="2" maxlength="2000" required
+                        placeholder="e.g. What law may be relevant to the alleged theft in this case?"></textarea>
+            </div>
+            <button type="submit" id="researchBtn" class="eval-run-btn">
+              <span class="ask-spark" aria-hidden="true">✦</span> Research
+            </button>
+          </form>
+
+          <div id="researchStatus" class="eval-status"></div>
+
+          <div id="researchResult" class="draft-result" hidden>
+            <div class="draft-badge-row">
+              <span id="researchBadge" class="draft-badge"></span>
+              <span id="researchMeta" class="draft-meta"></span>
+            </div>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">A · Legal Issue</div>
+              <p id="researchIssue" class="research-issue"></p>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">B · Research Answer</div>
+              <pre id="researchAnswer" class="draft-body"></pre>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">C · Relevant Law</div>
+              <div id="researchLaw" class="draft-sources"></div>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">D · Connection to This Case</div>
+              <div id="researchConnections" class="draft-sources"></div>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">E · Verified Judgments or Precedents</div>
+              <div id="researchJudgments" class="draft-sources"></div>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">F · Sources — ✓ verified · ⚠ cited but not supported</div>
+              <div id="researchSources" class="draft-sources"></div>
+            </section>
+
+            <section class="draft-panel">
+              <div class="draft-panel-title">G · Missing · Limitations</div>
+              <ul id="researchLimits" class="draft-missing"></ul>
+            </section>
+
+            <div id="researchClaims" class="draft-claims" hidden></div>
+          </div>
+        </div>
+      </div><!-- /researchView -->
+    </section>
+
+    <!-- ============ RIGHT SIDEBAR — EVIDENCE &amp; SOURCES ============ -->
+    <aside class="evidence-pane">
+      <section class="panel">
+        <div class="panel-head"><h2>Evidence &amp; Sources</h2></div>
+        <div class="ground-status">
+          <span class="gs-badge idle" id="gsBadge">STANDBY</span>
+          <div class="gs-detail" id="gsDetail">Ask a question to verify sources.</div>
+          <div class="gs-scores" id="gsScores" hidden>
+            <div class="gs-stat"><span class="gs-num" id="gsConf">—</span><span class="gs-lab">Confidence</span></div>
+            <div class="gs-stat"><span class="gs-num" id="gsRetr">—</span><span class="gs-lab">Retrieval</span></div>
+            <div class="gs-stat"><span class="gs-num" id="gsModel">—</span><span class="gs-lab">Model</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel evidence-panel">
+        <div class="panel-head"><h2>Evidence Used</h2></div>
+        <div id="evidenceList" class="evidence-list">
+          <div class="ev-empty">
+            <div class="ev-empty-icon" aria-hidden="true">◧</div>
+            <p>No evidence retrieved yet.</p>
+            <p class="muted">Retrieved excerpts, source files and page numbers appear here after you ask a question.</p>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
