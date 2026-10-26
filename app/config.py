@@ -10,10 +10,52 @@ DATA_DIR = BASE_DIR / "data"
 UPLOADS_DIR = DATA_DIR / "uploads"
 CHROMA_DIR = DATA_DIR / "chroma"
 DOCS_JSON = DATA_DIR / "docs.json"
+USERS_JSON = DATA_DIR / "users.json"
+SESSIONS_JSON = DATA_DIR / "sessions.json"
 STATIC_DIR = BASE_DIR / "static"
 
 for _dir in (UPLOADS_DIR, CHROMA_DIR):
     _dir.mkdir(parents=True, exist_ok=True)
+
+SESSION_COOKIE_NAME = "legallens_session"
+SESSION_MAX_AGE_SECONDS = 7 * 24 * 3600  # 7 days
+
+def load_environment(override: bool = False) -> None:
+    """Loads variables from local .env into os.environ if present."""
+    env_file = BASE_DIR / ".env"
+    if not env_file.is_file():
+        env_file = Path(".env").resolve()
+    if not env_file.is_file():
+        return
+
+    try:
+        import dotenv
+        # If any target variable is empty in os.environ, populate it
+        dotenv.load_dotenv(env_file, override=override)
+    except Exception:
+        pass
+
+    # Direct fallback parsing in case python-dotenv is absent
+    try:
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            k = k.strip()
+            v = v.strip().strip("'\"")
+            if k and v and (override or k not in os.environ or not os.environ[k].strip()):
+                os.environ[k] = v
+    except Exception:
+        pass
+
+# Ensure root .env is loaded before OAuth configuration is initialized
+load_environment(override=False)
+
+# Google OAuth 2.0 / OpenID Connect credentials (loaded from environment or .env)
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "").strip()
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "").strip()
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "").strip()
 
 COLLECTION_NAME = "legallens_chunks"
 

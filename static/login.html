@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In &mdash; LegalLens AI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-layout">
+    <!-- Ambient glowing accents -->
+    <div class="auth-glow auth-glow-1" aria-hidden="true"></div>
+    <div class="auth-glow auth-glow-2" aria-hidden="true"></div>
+
+    <div class="auth-card" id="authCard">
+      <!-- Brand Header -->
+      <header class="auth-header">
+        <div class="brand-mark auth-brand-mark" aria-hidden="true">
+          <!-- Shield + scales-of-justice emblem -->
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor"
+               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2.4 19.2 5v5.5c0 4.35-3 7.45-7.2 8.85C7.8 17.95 4.8 14.85 4.8 10.5V5L12 2.4Z"/>
+            <circle cx="12" cy="7.6" r=".9" fill="currentColor" stroke="none"/>
+            <path d="M12 8.6v6.2M9.9 14.8h4.2M9.5 10.6h5"/>
+            <path d="M9.5 10.6v1.6M7.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+            <path d="M14.5 10.6v1.6M12.4 12.2a2.1 2.1 0 0 0 4.2 0"/>
+          </svg>
+        </div>
+        <h1 class="auth-title">LegalLens <span class="gold">AI</span></h1>
+        <p class="auth-tagline">Grounded Legal Intelligence</p>
+        <p class="auth-sub" id="authSubtitle">Sign in to access your confidential case workspace</p>
+      </header>
+
+      <!-- Google OAuth Action (Option 3: Continue with Google) -->
+      <div class="google-auth-section">
+        <button type="button" class="btn-google" id="googleSignInBtn" onclick="handleGoogleSignIn(event)" aria-label="Continue with Google">
+          <svg class="google-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span id="googleBtnText">Continue with Google</span>
+          <span class="btn-spinner google-spinner" id="googleSpinner" aria-hidden="true" hidden></span>
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="auth-divider" aria-hidden="true">
+        <span>or continue with email</span>
+      </div>
+
+      <!-- Mode Switcher (Option 1: Create Account & Option 2: Sign In) -->
+      <div class="auth-tabs" role="tablist" aria-label="Authentication modes">
+        <button type="button" class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true">
+          Sign In
+        </button>
+        <button type="button" class="auth-tab" id="tabRegister" role="tab" aria-selected="false">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Alert / Status Notice -->
+      <div id="authAlert" class="auth-alert" role="alert" hidden>
+        <span class="auth-alert-icon" id="authAlertIcon" aria-hidden="true">&iexcl;</span>
+        <span class="auth-alert-msg" id="authAlertMsg"></span>
+      </div>
+
+      <!-- Auth Form -->
+      <form id="authForm" class="auth-form" novalidate>
+        <!-- Full Name Field (Option 1: Create Account Only) -->
+        <div class="auth-field" id="nameField" hidden>
+          <label for="nameInput" class="auth-label">Full Name</label>
+          <div class="input-wrapper">
+            <svg class="field-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                 stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input
+              type="text"
+              id="nameInput"
+              class="auth-input"
+              placeholder="Adv. Sarah Jenkins"
+              autocomplete="name"
+              maxlength="100"
+            />
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="auth-field">
+          <label for="emailInput" class="auth-label">Email Address</label>
+          <div class="input-wrapper">
+            <svg class="field-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                 stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <input
+              type="email"
+              id="emailInput"
+              class="auth-input"
+              placeholder="counsel@chambers.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="auth-field">
+          <div class="auth-label-row">
+            <label for="passwordInput" class="auth-label">Password</label>
+            <span class="field-hint" id="passwordHint" hidden>min. 8 characters</span>
+          </div>
+          <div class="input-wrapper">
+            <svg class="field-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                 stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <input
+              type="password"
+              id="passwordInput"
+              class="auth-input has-toggle"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <button
+              type="button"
+              class="btn-toggle-pw"
+              id="togglePasswordBtn"
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="icon-eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                   stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                   stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field (Option 1: Create Account Only) -->
+        <div class="auth-field" id="confirmPasswordField" hidden>
+          <label for="confirmPasswordInput" class="auth-label">Confirm Password</label>
+          <div class="input-wrapper">
+            <svg class="field-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                 stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <input
+              type="password"
+              id="confirmPasswordInput"
+              class="auth-input has-toggle"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="btn-toggle-pw"
+              id="toggleConfirmPasswordBtn"
+              aria-label="Show password"
+              title="Show or hide password"
+            >
+              <svg class="icon-eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                   stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                   stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="auth-submit-btn" id="submitBtn">
+          <span class="btn-spinner" id="btnSpinner" aria-hidden="true" hidden></span>
+          <span class="btn-text" id="btnText">Sign In to LegalLens AI</span>
+        </button>
+      </form>
+
+      <!-- Mode Toggle Footer -->
+      <footer class="auth-footer">
+        <p class="auth-footer-text" id="authSwitchPrompt">
+          Don't have an account yet?
+          <button type="button" class="auth-link" id="switchModeBtn">Create an account</button>
+        </p>
+        <div class="auth-badges" aria-label="Security and Grounding Standards">
+          <span class="badge-item">🔒 NIST PBKDF2</span>
+          <span class="badge-dot">&middot;</span>
+          <span class="badge-item">🌐 Google OAuth 2.0</span>
+          <span class="badge-dot">&middot;</span>
+          <span class="badge-item">⚖ Grounded Evidence</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+
+
+  <script>
+    "use strict";
+
+    // Global state
+    let isRegisterMode = false;
+    let isFormBusy = false;
+    let isGoogleBusy = false;
+
+    // Helper functions
+    function setAlert(msg, type = "error") {
+      const alertBox = document.getElementById("authAlert");
+      const icon = document.getElementById("authAlertIcon");
+      const text = document.getElementById("authAlertMsg");
+      if (!alertBox || !icon || !text) return;
+      if (!msg) {
+        alertBox.hidden = true;
+        return;
+      }
+      alertBox.className = `auth-alert auth-alert-${type}`;
+      icon.textContent = type === "error" ? "⚠" : (type === "success" ? "✓" : "ℹ");
+      text.textContent = msg;
+      alertBox.hidden = false;
+    }
+
+    function clearAlert() {
+      const alertBox = document.getElementById("authAlert");
+      if (alertBox) alertBox.hidden = true;
+    }
+
+    // Google Sign-In Handler
+    async function handleGoogleSignIn(e) {
+      if (e) {
+        if (typeof e.preventDefault === "function") e.preventDefault();
+        if (typeof e.stopPropagation === "function") e.stopPropagation();
+      }
+
+      if (isGoogleBusy) return false;
+      isGoogleBusy = true;
+
+      const btn = document.getElementById("googleSignInBtn");
+      const btnText = document.getElementById("googleBtnText");
+      const spinner = document.getElementById("googleSpinner");
+
+      // Requirement 4: immediately show inline "Connecting to Google..." loading message and disable duplicate clicks
+      setAlert("Connecting to Google… Please wait.", "info");
+      if (btn) btn.disabled = true;
+      if (spinner) spinner.hidden = false;
+      if (btnText) btnText.textContent = "Connecting to Google…";
+
+      try {
+        // Requirement 5: Send GET request to /api/auth/google/url using fetch with cache: "no-store"
+        const endpoint = "/api/auth/google/url?_=" + Date.now();
+        const res = await fetch(endpoint, {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Accept": "application/json",
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache"
+          }
+        });
+
+        // Requirement 7: Check for non-200 responses
+        if (!res.ok) {
+          let errDetail = `Server returned HTTP ${res.status}`;
+          try {
+            const errJson = await res.json();
+            if (errJson && errJson.detail) errDetail = errJson.detail;
+            else if (errJson && errJson.message) errDetail = errJson.message;
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+
+        // Requirement 7: Validate JSON
+        let data;
+        try {
+          data = await res.json();
+        } catch (jsonErr) {
+          throw new Error("Invalid response received from authentication server.");
+        }
+
+        // Requirement 6: Validate response. If configured is true and auth_url is valid, redirect using window.location.assign
+        if (data && data.configured === true && data.auth_url && typeof data.auth_url === "string") {
+          if (data.auth_url.startsWith("https://accounts.google.com/")) {
+            setAlert("Redirecting to Google…", "success");
+            window.location.assign(data.auth_url);
+            return false;
+          } else {
+            throw new Error("Invalid authorization URL returned by server.");
+          }
+        }
+
+        // Requirement 7: Missing credentials or unconfigured
+        const errorMsg = (data && data.message) ? data.message : "Google sign-in is not configured on this server. Please configure GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.";
+        setAlert(errorMsg, "error");
+
+      } catch (err) {
+        console.error("Google sign-in error:", err);
+        setAlert(err.message || "Failed to initiate Google sign-in. Please try again.", "error");
+      } finally {
+        isGoogleBusy = false;
+        if (btn) btn.disabled = false;
+        if (spinner) spinner.hidden = true;
+        if (btnText) btnText.textContent = "Continue with Google";
+      }
+      return false;
+    }
+
+    // Expose globally for inline onclick
+    window.handleGoogleSignIn = handleGoogleSignIn;
+
+    function initAuth() {
+      const $ = (id) => document.getElementById(id);
+
+      const tabSignIn = $("tabSignIn");
+      const tabRegister = $("tabRegister");
+      const authSubtitle = $("authSubtitle");
+      const nameField = $("nameField");
+      const nameInput = $("nameInput");
+      const confirmPasswordField = $("confirmPasswordField");
+      const passwordHint = $("passwordHint");
+      const submitBtn = $("submitBtn");
+      const btnText = $("btnText");
+      const btnSpinner = $("btnSpinner");
+      const authSwitchPrompt = $("authSwitchPrompt");
+      const switchModeBtn = $("switchModeBtn");
+      const emailInput = $("emailInput");
+      const passwordInput = $("passwordInput");
+      const confirmPasswordInput = $("confirmPasswordInput");
+      const togglePasswordBtn = $("togglePasswordBtn");
+      const toggleConfirmPasswordBtn = $("toggleConfirmPasswordBtn");
+      const googleSignInBtn = $("googleSignInBtn");
+      const authForm = $("authForm");
+
+      // Attach Google sign-in listener
+      if (googleSignInBtn) {
+        googleSignInBtn.addEventListener("click", handleGoogleSignIn);
+      }
+
+      // Check URL parameters for any callback errors
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlError = urlParams.get("error");
+      if (urlError) {
+        let displayError = urlError;
+        try {
+          displayError = decodeURIComponent(urlError);
+        } catch (_) {}
+        setAlert(displayError, "error");
+      }
+
+      function setMode(register) {
+        isRegisterMode = register;
+        clearAlert();
+
+        if (register) {
+          if (tabRegister) {
+            tabRegister.classList.add("active");
+            tabRegister.setAttribute("aria-selected", "true");
+          }
+          if (tabSignIn) {
+            tabSignIn.classList.remove("active");
+            tabSignIn.setAttribute("aria-selected", "false");
+          }
+
+          if (authSubtitle) authSubtitle.textContent = "Create a new verified account for LegalLens AI";
+          if (nameField) nameField.hidden = false;
+          if (nameInput) nameInput.required = true;
+          if (confirmPasswordField) confirmPasswordField.hidden = false;
+          if (confirmPasswordInput) confirmPasswordInput.required = true;
+          if (passwordHint) passwordHint.hidden = false;
+          if (passwordInput) passwordInput.autocomplete = "new-password";
+          if (btnText) btnText.textContent = "Create Account";
+          if (authSwitchPrompt) {
+            authSwitchPrompt.innerHTML = 'Already have an account? <button type="button" class="auth-link" id="switchModeBtn">Sign In</button>';
+            const newSwitch = $("switchModeBtn");
+            if (newSwitch) newSwitch.addEventListener("click", () => setMode(false));
+          }
+        } else {
+          if (tabSignIn) {
+            tabSignIn.classList.add("active");
+            tabSignIn.setAttribute("aria-selected", "true");
+          }
+          if (tabRegister) {
+            tabRegister.classList.remove("active");
+            tabRegister.setAttribute("aria-selected", "false");
+          }
+
+          if (authSubtitle) authSubtitle.textContent = "Sign in to access your confidential case workspace";
+          if (nameField) nameField.hidden = true;
+          if (nameInput) nameInput.required = false;
+          if (confirmPasswordField) confirmPasswordField.hidden = true;
+          if (confirmPasswordInput) confirmPasswordInput.required = false;
+          if (passwordHint) passwordHint.hidden = true;
+          if (passwordInput) passwordInput.autocomplete = "current-password";
+          if (btnText) btnText.textContent = "Sign In to LegalLens AI";
+          if (authSwitchPrompt) {
+            authSwitchPrompt.innerHTML = "Don't have an account yet? <button type=\"button\" class=\"auth-link\" id=\"switchModeBtn\">Create an account</button>";
+            const newSwitch = $("switchModeBtn");
+            if (newSwitch) newSwitch.addEventListener("click", () => setMode(true));
+          }
+        }
+      }
+
+      if (tabSignIn) tabSignIn.addEventListener("click", () => setMode(false));
+      if (tabRegister) tabRegister.addEventListener("click", () => setMode(true));
+      if (switchModeBtn) switchModeBtn.addEventListener("click", () => setMode(!isRegisterMode));
+
+      function setupPasswordToggle(toggleBtn, inputEl) {
+        if (!toggleBtn || !inputEl) return;
+        toggleBtn.addEventListener("click", () => {
+          const isPassword = inputEl.type === "password";
+          inputEl.type = isPassword ? "text" : "password";
+          toggleBtn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+          const eyeOpen = toggleBtn.querySelector(".icon-eye-open");
+          const eyeOff = toggleBtn.querySelector(".icon-eye-off");
+          if (eyeOpen && eyeOff) {
+            eyeOpen.hidden = isPassword;
+            eyeOff.hidden = !isPassword;
+          }
+        });
+      }
+
+      setupPasswordToggle(togglePasswordBtn, passwordInput);
+      setupPasswordToggle(toggleConfirmPasswordBtn, confirmPasswordInput);
+
+      // Email/Password Form submission
+      if (authForm) {
+        authForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (isFormBusy) return;
+
+          clearAlert();
+          const email = emailInput ? emailInput.value.trim() : "";
+          const password = passwordInput ? passwordInput.value : "";
+
+          if (isRegisterMode) {
+            const name = nameInput ? nameInput.value.trim() : "";
+            if (!name) {
+              setAlert("Please enter your full name.", "error");
+              if (nameInput) nameInput.focus();
+              return;
+            }
+          }
+
+          if (!email) {
+            setAlert("Please enter your email address.", "error");
+            if (emailInput) emailInput.focus();
+            return;
+          }
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            setAlert("Please enter a valid email address.", "error");
+            if (emailInput) emailInput.focus();
+            return;
+          }
+
+          if (!password) {
+            setAlert("Please enter your password.", "error");
+            if (passwordInput) passwordInput.focus();
+            return;
+          }
+
+          if (isRegisterMode) {
+            if (password.length < 8) {
+              setAlert("Password must be at least 8 characters long.", "error");
+              if (passwordInput) passwordInput.focus();
+              return;
+            }
+            const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : "";
+            if (password !== confirmPassword) {
+              setAlert("Passwords do not match.", "error");
+              if (confirmPasswordInput) confirmPasswordInput.focus();
+              return;
+            }
+          }
+
+          isFormBusy = true;
+          if (submitBtn) submitBtn.disabled = true;
+          if (btnSpinner) btnSpinner.hidden = false;
+          if (btnText) btnText.textContent = isRegisterMode ? "Creating Account…" : "Authenticating…";
+
+          try {
+            if (isRegisterMode) {
+              const name = nameInput ? nameInput.value.trim() : "";
+              const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password }),
+              });
+
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok) {
+                const errorMsg = data.detail || "Registration failed.";
+                setAlert(typeof errorMsg === "string" ? errorMsg : JSON.stringify(errorMsg), "error");
+                return;
+              }
+
+              setMode(false);
+              if (emailInput) emailInput.value = email;
+              if (passwordInput) {
+                passwordInput.value = "";
+                passwordInput.focus();
+              }
+              if (confirmPasswordInput) confirmPasswordInput.value = "";
+              setAlert("Account created successfully! Please enter your password to sign in.", "success");
+
+            } else {
+              const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+              });
+
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok) {
+                const errorMsg = data.detail || "Invalid email or password.";
+                setAlert(typeof errorMsg === "string" ? errorMsg : JSON.stringify(errorMsg), "error");
+                return;
+              }
+
+              setAlert("Authentication successful! Redirecting to workspace…", "success");
+              setTimeout(() => {
+                const next = urlParams.get("next") || "/";
+                window.location.assign(next);
+              }, 400);
+            }
+
+          } catch (err) {
+            setAlert("Unable to reach the server. Please check your connection.", "error");
+          } finally {
+            isFormBusy = false;
+            if (submitBtn) submitBtn.disabled = false;
+            if (btnSpinner) btnSpinner.hidden = true;
+            if (btnText) btnText.textContent = isRegisterMode ? "Create Account" : "Sign In to LegalLens AI";
+          }
+        });
+      }
+    }
+
+    // Attach after DOM is ready (Requirement 3)
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initAuth);
+    } else {
+      initAuth();
+    }
+  </script>
+</body>
+</html>
