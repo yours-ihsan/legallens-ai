@@ -17,8 +17,12 @@ for _dir in (UPLOADS_DIR, CHROMA_DIR):
 
 COLLECTION_NAME = "legallens_chunks"
 
-# LLM via local OpenCode CLI (this environment has NO API keys).
+# LLM. If LEGALLENS_LLM_BASE_URL is set, any OpenAI-compatible HTTP API is used
+# (works on a cloud server). If it is empty, the local OpenCode CLI is used
+# (local development only).
 MODEL = os.environ.get("LEGALLENS_MODEL", "opencode/mimo-v2.6-flash-free")
+LLM_BASE_URL = os.environ.get("LEGALLENS_LLM_BASE_URL", "")
+LLM_API_KEY = os.environ.get("LEGALLENS_LLM_API_KEY", "")
 LLM_TIMEOUT_SECONDS = int(os.environ.get("LEGALLENS_LLM_TIMEOUT", "180"))
 
 # Retrieval / grounding

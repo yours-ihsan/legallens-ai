@@ -5,3 +5,4 @@ chromadb>=0.5.23
 python-multipart>=0.0.18
 pytest>=8.3
 httpx>=0.28
+openai>=1.0.0

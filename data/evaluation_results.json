@@ -1,34 +1,34 @@
 {
-  "ran_at": "2026-10-08T13:58:40+00:00",
+  "ran_at": "2026-10-26T08:56:48+00:00",
   "results": {
     "baseline": {
-      "groundedness": 50.0,
-      "total_claims": 24,
-      "supported_claims": 12,
-      "unsupported_claims": 12,
-      "abstentions": 4,
-      "retrieval_success": 100.0,
-      "retrieval_hits": 15,
+      "groundedness": 39.3,
+      "total_claims": 28,
+      "supported_claims": 11,
+      "unsupported_claims": 17,
+      "abstentions": 11,
+      "retrieval_success": 0.0,
+      "retrieval_hits": 0,
       "answerable_questions": 15,
       "correct_refusals": 4,
       "unanswerable_questions": 4,
       "errors": 0
     },
     "legallens": {
-      "groundedness": 90.0,
-      "total_claims": 20,
-      "supported_claims": 18,
-      "unsupported_claims": 2,
-      "abstentions": 1,
-      "retrieval_success": 100.0,
-      "retrieval_hits": 15,
+      "groundedness": 87.5,
+      "total_claims": 8,
+      "supported_claims": 7,
+      "unsupported_claims": 1,
+      "abstentions": 3,
+      "retrieval_success": 0.0,
+      "retrieval_hits": 0,
       "answerable_questions": 15,
       "correct_refusals": 3,
       "unanswerable_questions": 4,
       "errors": 0
     },
     "comparison": {
-      "groundedness_improvement": 40.0,
+      "groundedness_improvement": 48.2,
       "retrieval_improvement": 0.0
     },
     "questions": [
@@ -40,59 +40,52 @@
           "21:25"
         ],
         "baseline": {
-          "answer": "The laptop was noticed missing by Arun Mehta at **21:25** (E4), and the incident was formally reported to building security at **21:40** on 18 September 2026.\n\nSources: LegalLens_Fictional_Crime_Case.pdf, pages 1–2.",
+          "answer": "It was reported missing on the evening of **18 September 2026**, between about **20:55 and 21:25**, from Room 304 of Harbor View Business Centre, Chennai (per FIR No. 0142/2026).",
           "refused": false,
           "error": null,
           "claims": [
             {
-              "claim": "The laptop was noticed missing by Arun Mehta at  21:25  (E4), and the incident was formally reported to building security at  21:40  on 18 September 2026.",
+              "claim": "It was reported missing on the evening of  18 September 2026 , between about  20:55 and 21:25 , from Room 304 of Harbor View Business Centre, Chennai (per FIR No.",
               "kind": "claim",
-              "grounded": false,
-              "evidence_ids": [],
-              "filename": null,
-              "page": null,
-              "reason": "best chunk E2 matched only 8/11 content token(s) (missing: build, formally, notic) — below the 75% traceability threshold"
-            },
-            {
-              "claim": "Sources: LegalLens_Fictional_Crime_Case.pdf, pages 1–2.",
-              "kind": "claim",
-              "grounded": false,
-              "evidence_ids": [],
-              "filename": null,
-              "page": null,
-              "reason": "best chunk E2 matched only 4/6 content token(s) (missing: page, pdf) — below the 75% traceability threshold"
+              "grounded": true,
+              "evidence_ids": [
+                "E1"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 1,
+              "reason": "matched 11/11 content token(s) in E1 and all 5 number(s) verbatim"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The sources state that Arun Mehta reported the laptop missing at 21:25, and the incident was formally reported to building security at 21:40 on 18 September 2026 [E1][E2].",
+          "answer": "The laptop was reported missing on the evening of 18 September 2026, between about 20:55 and 21:25, from Room 304 of Harbor View Business Centre, Chennai [E1].",
           "refused": false,
           "stage": null,
           "error": null,
           "claims": [
             {
-              "claim": "The sources state that Arun Mehta reported the laptop missing at 21:25, and the incident was formally reported to building security at 21:40 on 18 September 2026   .",
+              "claim": "The laptop was reported missing on the evening of 18 September 2026, between about 20:55 and 21:25, from Room 304 of Harbor View Business Centre, Chennai  .",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E2"
+                "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 1,
-              "reason": "matched 8/10 content token(s) in E2 and all 4 number(s) verbatim"
+              "reason": "matched 11/11 content token(s) in E1 and all 5 number(s) verbatim"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -105,74 +98,51 @@
           "third-floor lift"
         ],
         "baseline": {
-          "answer": "At 21:12, security guard Rohan Das reported seeing a person carrying a black backpack near the third-floor lift (evidence E2, LegalLens_Fictional_Crime_Case.pdf, pages 1–2). The document does not identify the person seen.",
-          "refused": true,
-          "error": null,
-          "claims": [
-            {
-              "claim": "At 21:12, security guard Rohan Das reported seeing a person carrying a black backpack near the third-floor lift (evidence E2, LegalLens_Fictional_Crime_Case.pdf, pages 1–2).",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E4"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 17/21 content token(s) in E4 and all 4 number(s) verbatim"
-            },
-            {
-              "claim": "The document does not identify the person seen.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E5"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 3/3 content token(s) in E5"
-            }
-          ],
-          "retrieval": {
-            "success": true,
-            "evidence_id": "E2",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
-          }
-        },
-        "legallens": {
-          "answer": "The security guard, Rohan Das, reported seeing a person carrying a black backpack near the third-floor lift at 21:12 [E2][E4]. The available material does not identify the person seen near the lift [E5].",
+          "answer": "He saw a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026. His statement does not name Manoj Verma.",
           "refused": false,
-          "stage": null,
           "error": null,
           "claims": [
             {
-              "claim": "The security guard, Rohan Das, reported seeing a person carrying a black backpack near the third-floor lift at 21:12   .",
+              "claim": "He saw a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
                 "E2"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 14/14 content token(s) in E2 and all 1 number(s) verbatim"
+              "reason": "matched 9/10 content token(s) in E2 and all 3 number(s) verbatim"
             },
             {
-              "claim": "The available material does not identify the person seen near the lift  .",
+              "claim": "His statement does not name Manoj Verma.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E5"
+                "E2"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 6/7 content token(s) in E5"
+              "reason": "matched 4/4 content token(s) in E2"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E2",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
+          }
+        },
+        "legallens": {
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
+          "error": null,
+          "claims": [],
+          "retrieval": {
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -184,52 +154,49 @@
           "20:55"
         ],
         "baseline": {
-          "answer": "The laptop was last seen on the desk at approximately **20:55** (Arun Mehta's statement — LegalLens_Fictional_Crime_Case.pdf, page 1).",
-          "refused": false,
+          "answer": "The context does not record a specific \"last seen on the desk\" time. It only says Arun Mehta reported the laptop missing from Room 304 on the evening of 18 September 2026, **between about 20:55 and 21:25** (per FIR No. 0142/2026).",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The laptop was last seen on the desk at approximately  20:55  (Arun Mehta's statement — LegalLens_Fictional_Crime_Case.pdf, page 1).",
+              "claim": "The context does not record a specific \"last seen on the desk\" time.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "It only says Arun Mehta reported the laptop missing from Room 304 on the evening of 18 September 2026,  between about 20:55 and 21:25  (per FIR No.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E2"
+                "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 1,
-              "reason": "matched 11/14 content token(s) in E2 and all 2 number(s) verbatim"
+              "reason": "matched 9/9 content token(s) in E1 and all 5 number(s) verbatim"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The laptop was last seen on the desk at approximately 20:55, according to the complainant's statement [E1][E2].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The laptop was last seen on the desk at approximately 20:55, according to the complainant's statement   .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E2"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 6/7 content token(s) in E2 and all 1 number(s) verbatim"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -242,52 +209,38 @@
           "Chennai"
         ],
         "baseline": {
-          "answer": "The incident took place in **Room 304 of Harbor View Business Centre, Chennai** — a theft of a company laptop (excerpt 1, page 1).",
+          "answer": "Room 304 of Harbor View Business Centre, Chennai (with related evidence from the third-floor corridor and ground-floor reception).",
           "refused": false,
           "error": null,
           "claims": [
             {
-              "claim": "The incident took place in  Room 304 of Harbor View Business Centre, Chennai  — a theft of a company laptop (excerpt 1, page 1).",
+              "claim": "Room 304 of Harbor View Business Centre, Chennai (with related evidence from the third-floor corridor and ground-floor reception).",
               "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 11/13 content token(s) in E1 and all 3 number(s) verbatim"
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E2 matched only 9/13 content token(s) (missing: evidence, ground, reception, relat) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The incident took place in Room 304 of Harbor View Business Centre, Chennai, where the complainant reported that a company laptop was missing [E1].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The incident took place in Room 304 of Harbor View Business Centre, Chennai, where the complainant reported that a company laptop was missing  .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 13/14 content token(s) in E1 and all 1 number(s) verbatim"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -300,61 +253,40 @@
           "complainant"
         ],
         "baseline": {
-          "answer": "Arun Mehta filed the complaint (the complainant in case LL-CR-2026-014), reporting the laptop missing from Room 304.",
+          "answer": "Arun Mehta filed the complaint (FIR No. 0142/2026).",
           "refused": false,
           "error": null,
           "claims": [
             {
-              "claim": "Arun Mehta filed the complaint (the complainant in case LL-CR-2026-014), reporting the laptop missing from Room 304.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 8/10 content token(s) in E1 and all 2 number(s) verbatim"
-            }
-          ],
-          "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
-          }
-        },
-        "legallens": {
-          "answer": "Arun Mehta filed the complaint. He is identified as the complainant and reported the laptop missing from Room 304, stating it was on the desk at 20:55 and noticing it missing upon his return at 21:25, with the incident formally reported at 21:40.",
-          "refused": false,
-          "stage": null,
-          "error": null,
-          "claims": [
-            {
-              "claim": "Arun Mehta filed the complaint.",
-              "kind": "claim",
-              "grounded": false,
-              "evidence_ids": [],
-              "filename": null,
-              "page": null,
-              "reason": "best chunk E1 matched only 2/4 content token(s) (missing: complaint, fil) — below the 75% traceability threshold"
-            },
-            {
-              "claim": "He is identified as the complainant and reported the laptop missing from Room 304, stating it was on the desk at 20:55 and noticing it missing upon his return at 21:25, with the incident formally reported at 21:40.",
+              "claim": "Arun Mehta filed the complaint (FIR No.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
                 "E3"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 9/12 content token(s) in E3 and all 4 number(s) verbatim"
+              "reason": "matched 4/5 content token(s) in E3"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
+          }
+        },
+        "legallens": {
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
+          "error": null,
+          "claims": [],
+          "retrieval": {
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -366,52 +298,58 @@
           "21:05"
         ],
         "baseline": {
-          "answer": "At approximately **21:05** on 18 September 2026 (evidence E3: \"Priya Nair said she left Room 304 at approximately 21:05\").",
-          "refused": false,
+          "answer": "The context does not contain this information. Priya Nair is only mentioned as a witness whose statement was recorded by Sub-Inspector R. Anand (excerpt 1); no time or detail about her leaving Room 304 is given.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "At approximately  21:05  on 18 September 2026 (evidence E3: \"Priya Nair said she left Room 304 at approximately 21:05\").",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E3"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 1,
-              "reason": "matched 6/7 content token(s) in E3 and all 6 number(s) verbatim"
-            }
-          ],
-          "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
-          }
-        },
-        "legallens": {
-          "answer": "Priya Nair left Room 304 at approximately 21:05, after which she went to the ground-floor cafeteria [E1] [E3].",
-          "refused": false,
-          "stage": null,
-          "error": null,
-          "claims": [
+              "claim": "The context does not contain this information.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
             {
-              "claim": "Priya Nair left Room 304 at approximately 21:05, after which she went to the ground-floor cafeteria    .",
+              "claim": "Priya Nair is only mentioned as a witness whose statement was recorded by Sub-Inspector R.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
                 "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 9/9 content token(s) in E1 and all 2 number(s) verbatim"
+              "reason": "matched 5/6 content token(s) in E1"
+            },
+            {
+              "claim": "Anand (excerpt 1); no time or detail about her leaving Room 304 is given.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E4 matched only 2/5 content token(s) (missing: detail, leav, time) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
+          }
+        },
+        "legallens": {
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
+          "error": null,
+          "claims": [],
+          "retrieval": {
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -423,38 +361,49 @@
           "LL-CR-2026-014"
         ],
         "baseline": {
-          "answer": "**LL-CR-2026-014** (from LegalLens_Fictional_Crime_Case.pdf, page 1).",
+          "answer": "LL-CR-2026-014",
           "refused": false,
+          "error": null,
+          "claims": [],
+          "retrieval": {
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
+          }
+        },
+        "legallens": {
+          "answer": "The sources state the case ID is LL-CR-2026-014, recorded against FIR No. 0142/2026, not a different case identifier [E1].",
+          "refused": false,
+          "stage": null,
           "error": null,
           "claims": [
             {
-              "claim": "LL-CR-2026-014  (from LegalLens_Fictional_Crime_Case.pdf, page 1).",
+              "claim": "The sources state the case ID is LL-CR-2026-014, recorded against FIR No.",
+              "kind": "claim",
+              "grounded": true,
+              "evidence_ids": [
+                "E1"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 1,
+              "reason": "matched 2/2 content token(s) in E1 and all 1 number(s) verbatim"
+            },
+            {
+              "claim": "0142/2026, not a different case identifier  .",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 4/6 content token(s) (missing: page, pdf) — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 1/3 content token(s) (missing: different, identifier) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
-          }
-        },
-        "legallens": {
-          "answer": "LL-CR-2026-014",
-          "refused": false,
-          "stage": null,
-          "error": null,
-          "claims": [],
-          "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -466,50 +415,76 @@
           "21:40"
         ],
         "baseline": {
-          "answer": "The incident was formally reported at **21:40** — per the timeline, \"The incident is formally reported to building security\" at 21:40 (LegalLens_Fictional_Crime_Case.pdf, page 2), which matches the \"Reported At\" field of 21:40 on page 1.",
-          "refused": false,
+          "answer": "The context does not state a specific **time** of formal reporting. It only gives:\n\n- The incident window: evening of **18 September 2026, between about 20:55 and 21:25** (excerpt 1).\n- The FIR was **registered on 19 September 2026** (excerpt 2).\n\nNo hour is recorded for when the complaint/FIR was formally made.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The incident was formally reported at  21:40  — per the timeline, \"The incident is formally reported to building security\" at 21:40 (LegalLens_Fictional_Crime_Case.pdf, page 2), which matches the \"Reported At\" field of 21:40 on page 1.",
+              "claim": "The context does not state a specific  time  of formal reporting.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "It only gives:",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E2 matched only 7/14 content token(s) (missing: build, field, formally, matche, page, pdf) — below the 75% traceability threshold"
-            }
-          ],
-          "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
-          }
-        },
-        "legallens": {
-          "answer": "The incident was formally reported to building security at 21:40 [E1], and the case file records the matter as reported at 21:40 [E2].",
-          "refused": false,
-          "stage": null,
-          "error": null,
-          "claims": [
+              "reason": "best chunk E1 matched only 0/1 content token(s) (missing: give) — below the 75% traceability threshold"
+            },
             {
-              "claim": "The incident was formally reported to building security at 21:40  , and the case file records the matter as reported at 21:40  .",
+              "claim": "The incident window: evening of  18 September 2026, between about 20:55 and 21:25  (excerpt 1).",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E1 matched only 2/4 content token(s) (missing: incident, window) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "The FIR was  registered on 19 September 2026  (excerpt 2).",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E2"
+                "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 1,
-              "reason": "matched 6/8 content token(s) in E2 and all 2 number(s) verbatim"
+              "reason": "matched 3/3 content token(s) in E1 and all 3 number(s) verbatim"
+            },
+            {
+              "claim": "No hour is recorded for when the complaint/FIR was formally made.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E1 matched only 1/5 content token(s) (missing: complaint, formally, hour, made) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
+          }
+        },
+        "legallens": {
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
+          "error": null,
+          "claims": [],
+          "retrieval": {
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -521,83 +496,70 @@
           "does not identify"
         ],
         "baseline": {
-          "answer": "No. The document records that security guard Rohan Das saw \"a person with a black backpack\" near the third-floor lift at 21:12 [E2], but it explicitly states that the material \"does not identify the person seen near the lift\" (page 2). The individual's identity is not contained in the provided context.",
-          "refused": true,
+          "answer": "No. The security guard Rohan Das's statement describes only \"a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026,\" and explicitly \"does not name Manoj Verma.\" Manoj Verma separately states that he carried a black backpack with work tools, but that is his own account, not an identification by the witness.",
+          "refused": false,
           "error": null,
           "claims": [
             {
-              "claim": "The document records that security guard Rohan Das saw \"a person with a black backpack\" near the third-floor lift at 21:12  , but it explicitly states that the material \"does not identify the person seen near the lift\" (page 2).",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E2"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 13/17 content token(s) in E2 and all 2 number(s) verbatim"
-            },
-            {
-              "claim": "The individual's identity is not contained in the provided context.",
+              "claim": "The security guard Rohan Das's statement describes only \"a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026,\" and explicitly \"does not name Manoj Verma.\" Manoj Verma separately states that he carried a black backpack with work tools, but that is his own account, not an identification by the witness.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 1/3 content token(s) (missing: identity, individual') — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 17/26 content token(s) (missing: account, carri, das', explicitly, identification, separately) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The sources state that the document does not identify the person seen near the lift. The evidence expressly notes that the material does not identify the person seen near the lift and does not establish that any named individual took the laptop. The security guard, Rohan Das, reported seeing an unidentified person carrying a black backpack near the third-floor lift at 21:12, but the person's identity is not recorded [E1][E2].",
+          "answer": "The evidence does not identify the person seen near the lift. The statement of the security guard Rohan Das describes a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026, and that statement does not name Manoj Verma [E1]. The sources separately record only that Manoj Verma states he carried a black backpack containing his work tools on 18 September 2026 and that he denies taking the laptop — a stated position, not an identification or proof of identity [E5].",
           "refused": false,
           "stage": null,
           "error": null,
           "claims": [
             {
-              "claim": "The sources state that the document does not identify the person seen near the lift.",
+              "claim": "The evidence does not identify the person seen near the lift.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "The statement of the security guard Rohan Das describes a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026, and that statement does not name Manoj Verma  .",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
                 "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 5/5 content token(s) in E1"
+              "reason": "matched 18/18 content token(s) in E1 and all 3 number(s) verbatim"
             },
             {
-              "claim": "The evidence expressly notes that the material does not identify the person seen near the lift and does not establish that any named individual took the laptop.",
+              "claim": "The sources separately record only that Manoj Verma states he carried a black backpack containing his work tools on 18 September 2026 and that he denies taking the laptop — a stated position, not an identification or proof of identity  .",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E1"
+                "E5"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 12/13 content token(s) in E1"
-            },
-            {
-              "claim": "The security guard, Rohan Das, reported seeing an unidentified person carrying a black backpack near the third-floor lift at 21:12, but the person's identity is not recorded   .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E2"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 14/17 content token(s) in E2 and all 1 number(s) verbatim"
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 3,
+              "reason": "matched 13/17 content token(s) in E5 and all 2 number(s) verbatim"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -609,48 +571,47 @@
           "21:30"
         ],
         "baseline": {
-          "answer": "21:30 — the document states Kiran Rao \"was working on the second floor until 21:30\" (LegalLens_Fictional_Crime_Case.pdf, page 1).",
-          "refused": false,
+          "answer": "The context does not contain that information. Ken Rao is only mentioned as a witness whose statement was recorded; there is no detail about him working on the second floor or until what time.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "21:30 — the document states Kiran Rao \"was working on the second floor until 21:30\" (LegalLens_Fictional_Crime_Case.pdf, page 1).",
+              "claim": "The context does not contain that information.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "Ken Rao is only mentioned as a witness whose statement was recorded; there is no detail about him working on the second floor or until what time.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 3/11 content token(s) (missing: case, crime, fictional, kiran, legallen, page) — below the 75% traceability threshold"
+              "reason": "best chunk E2 matched only 3/10 content token(s) (missing: detail, him, ken, rao, second, time) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The evidence states that Kiran Rao said he was working on the second floor until 21:30 [E1][E3].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The evidence states that Kiran Rao said he was working on the second floor until 21:30   .",
-              "kind": "claim",
-              "grounded": false,
-              "evidence_ids": [],
-              "filename": null,
-              "page": null,
-              "reason": "best chunk E1 matched only 3/6 content token(s) (missing: evidence, kiran, rao) — below the 75% traceability threshold"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "LegalLens_Fictional_Crime_Case.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -662,50 +623,56 @@
           "USD 50,000"
         ],
         "baseline": {
-          "answer": "USD 50,000 per contract year (Clause 7 – Limitation of Liability, sample.pdf, page 1).",
-          "refused": false,
+          "answer": "The context does not contain any information about an aggregate liability cap or contract year. The excerpts are a criminal bail record (FIR No. 0142/2026) with no contractual terms.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "USD 50,000 per contract year (Clause 7 – Limitation of Liability, sample.pdf, page 1).",
+              "claim": "The context does not contain any information about an aggregate liability cap or contract year.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "The excerpts are a criminal bail record (FIR No.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 6/9 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 2/3 content token(s) (missing: criminal) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "0142/2026) with no contractual terms.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E3 matched only 0/2 content token(s) (missing: contractual, term) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The aggregate liability of either party under the Agreement shall not exceed USD 50,000 per contract year [E1].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The aggregate liability of either party under the Agreement shall not exceed USD 50,000 per contract year  .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 1,
-              "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -718,61 +685,38 @@
           "90"
         ],
         "baseline": {
-          "answer": "Ninety (90) days' written notice to the other party is required to terminate the Agreement (Clause 8 – Termination, sample.pdf, p. 1). Note that termination does not relieve the Client of payment obligations accrued before the effective date of termination.",
-          "refused": false,
+          "answer": "The provided excerpts do not contain any agreement or a notice period for termination, so the number of days' notice required cannot be determined from this context.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "Ninety (90) days' written notice to the other party is required to terminate the Agreement (Clause 8 – Termination, sample.pdf, p.",
-              "kind": "claim",
-              "grounded": false,
+              "claim": "The provided excerpts do not contain any agreement or a notice period for termination, so the number of days' notice required cannot be determined from this context.",
+              "kind": "abstention",
+              "grounded": null,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 8/12 content token(s) (missing: days', pdf, requir, sample) — below the 75% traceability threshold"
-            },
-            {
-              "claim": "Note that termination does not relieve the Client of payment obligations accrued before the effective date of termination.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 1,
-              "reason": "matched 8/8 content token(s) in E1"
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "Either party may terminate the Agreement upon ninety (90) days written notice to the other party. [E1]",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "Either party may terminate the Agreement upon ninety (90) days written notice to the other party.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 1,
-              "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 1
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -784,50 +728,58 @@
           "Singapore"
         ],
         "baseline": {
-          "answer": "The laws of Singapore (Clause 13 — Governing Law, sample.pdf page 2).",
-          "refused": false,
+          "answer": "The context does not contain the answer. The excerpts are a criminal bail record (FIR No. 0142/2026, Section 303(2) BNS 2023) and mention no agreement or governing-law clause.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The laws of Singapore (Clause 13 — Governing Law, sample.pdf page 2).",
+              "claim": "The context does not contain the answer.",
+              "kind": "claim",
+              "grounded": true,
+              "evidence_ids": [
+                "E3"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 3,
+              "reason": "matched 1/1 content token(s) in E3"
+            },
+            {
+              "claim": "The excerpts are a criminal bail record (FIR No.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 4/7 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 2/3 content token(s) (missing: criminal) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "0142/2026, Section 303(2) BNS 2023) and mention no agreement or governing-law clause.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E2 matched only 1/6 content token(s) (missing: agreement, bns, clause, govern, law) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The sources state that the Agreement shall be governed by and construed in accordance with the laws of Singapore [E1].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The sources state that the Agreement shall be governed by and construed in accordance with the laws of Singapore  .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 2,
-              "reason": "matched 6/6 content token(s) in E1"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -839,52 +791,58 @@
           "Singapore International Arbitration Centre"
         ],
         "baseline": {
-          "answer": "The **Singapore International Arbitration Centre (SIAC)** administers the arbitration (sample.pdf, page 2, Clause 14 - Dispute Resolution).",
-          "refused": false,
+          "answer": "The context does not contain the answer. The excerpts concern a bail application in a criminal theft case (FIR No. 0142/2026) and mention no arbitration or arbitral institution.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The  Singapore International Arbitration Centre (SIAC)  administers the arbitration (sample.pdf, page 2, Clause 14 - Dispute Resolution).",
+              "claim": "The context does not contain the answer.",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E1"
+                "E6"
               ],
-              "filename": "sample.pdf",
-              "page": 2,
-              "reason": "matched 9/12 content token(s) in E1 and all 2 number(s) verbatim"
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 3,
+              "reason": "matched 1/1 content token(s) in E6"
+            },
+            {
+              "claim": "The excerpts concern a bail application in a criminal theft case (FIR No.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E1 matched only 4/7 content token(s) (missing: application, concern, criminal) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "0142/2026) and mention no arbitration or arbitral institution.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E1 matched only 0/3 content token(s) (missing: arbitral, arbitration, institution) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "The sources state that the arbitration is administered by the Singapore International Arbitration Centre (SIAC). [E1]",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "premise",
           "error": null,
-          "claims": [
-            {
-              "claim": "The sources state that the arbitration is administered by the Singapore International Arbitration Centre (SIAC).",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 2,
-              "reason": "matched 6/6 content token(s) in E1"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -897,50 +855,47 @@
           "5 years"
         ],
         "baseline": {
-          "answer": "Five (5) years from the date of disclosure (Clause 12, sample.pdf, page 2).",
-          "refused": false,
+          "answer": "The context excerpts do not contain any information about confidentiality or how long it must be maintained. They cover only arrest, custody, investigation status, and proposed bail conditions in FIR No. 0142/2026.",
+          "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "Five (5) years from the date of disclosure (Clause 12, sample.pdf, page 2).",
+              "claim": "The context excerpts do not contain any information about confidentiality or how long it must be maintained.",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "They cover only arrest, custody, investigation status, and proposed bail conditions in FIR No.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 5/8 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 5/9 content token(s) (missing: bail, condition, cover, propos) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         },
         "legallens": {
-          "answer": "Each party must keep confidential all technical and commercial information disclosed by the other party for a period of five (5) years from the date of disclosure [E1].",
-          "refused": false,
-          "stage": null,
+          "answer": "Insufficient evidence in the provided documents.",
+          "refused": true,
+          "stage": "model",
           "error": null,
-          "claims": [
-            {
-              "claim": "Each party must keep confidential all technical and commercial information disclosed by the other party for a period of five (5) years from the date of disclosure  .",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "sample.pdf",
-              "page": 2,
-              "reason": "matched 12/12 content token(s) in E1 and all 1 number(s) verbatim"
-            }
-          ],
+          "claims": [],
           "retrieval": {
-            "success": true,
-            "evidence_id": "E1",
-            "filename": "sample.pdf",
-            "page": 2
+            "success": false,
+            "evidence_id": null,
+            "filename": null,
+            "page": null
           }
         }
       },
@@ -950,12 +905,12 @@
         "answerable": false,
         "expected_facts": [],
         "baseline": {
-          "answer": "The document does not say who stole the laptop. It explicitly states that the material \"does not identify the person seen near the lift\" and \"does not establish that any named individual took the laptop\" (LegalLens_Fictional_Crime_Case.pdf, page 2).\n\nFor reference, the evidence only establishes the timeline: the laptop was last seen at 20:55 (E4), Rohan Das saw an unidentified person with a black backpack at 21:12 (E2), and it was reported missing at 21:25 (E4).",
+          "answer": "The context does not say who stole the laptop. It records only that Manoj Verma was arrested and denies taking it, that the laptop was recovered from an unclaimed-parcel shelf — not from his possession — and that \"nothing in this record establishes that Manoj Verma is guilty or innocent.\"",
           "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The document does not say who stole the laptop.",
+              "claim": "The context does not say who stole the laptop.",
               "kind": "abstention",
               "grounded": null,
               "evidence_ids": [],
@@ -964,24 +919,13 @@
               "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
             },
             {
-              "claim": "It explicitly states that the material \"does not identify the person seen near the lift\" and \"does not establish that any named individual took the laptop\" (LegalLens_Fictional_Crime_Case.pdf, page 2).",
+              "claim": "It records only that Manoj Verma was arrested and denies taking it, that the laptop was recovered from an unclaimed-parcel shelf — not from his possession — and that \"nothing in this record establishes that Manoj Verma is guilty or innocent.\"",
               "kind": "abstention",
               "grounded": null,
               "evidence_ids": [],
               "filename": null,
               "page": null,
               "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
-            },
-            {
-              "claim": "For reference, the evidence only establishes the timeline: the laptop was last seen at 20:55 (E4), Rohan Das saw an unidentified person with a black backpack at 21:12 (E2), and it was reported missing at 21:25 (E4).",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E2"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 12/16 content token(s) in E2 and all 6 number(s) verbatim"
             }
           ],
           "retrieval": {
@@ -990,13 +934,13 @@
           }
         },
         "legallens": {
-          "answer": "The sources do not identify who stole the laptop. The investigation note states that the available material does not establish that any named individual took the laptop, and it does not identify the person seen near the lift. The evidence only records that the laptop was reported missing from Room 304 [E1][E2], that security guard Rohan Das saw an unidentified person carrying a black backpack near the third-floor lift at 21:12 [E1][E2], and that the third-floor corridor was accessible to authorized staff [E2].",
+          "answer": "The provided evidence does not establish who stole the laptop. FIR No. 0142/2026 did not name any accused when it was registered, and Manoj Verma was identified only later during the investigation [E1]. The recovery memo does not record the laptop being found in the possession or residence of Manoj Verma; the laptop was recovered from an unclaimed-parcel shelf at the ground-floor reception [E2]. As of 9 October 2026, no chargesheet had been filed, and the security guard's statement describing a person with a black backpack does not name Manoj Verma [E4]. Manoj Verma denies taking the laptop, and nothing in the record establishes that he is guilty or innocent [E6].",
           "refused": false,
           "stage": null,
           "error": null,
           "claims": [
             {
-              "claim": "The sources do not identify who stole the laptop.",
+              "claim": "The provided evidence does not establish who stole the laptop.",
               "kind": "abstention",
               "grounded": null,
               "evidence_ids": [],
@@ -1005,26 +949,46 @@
               "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
             },
             {
-              "claim": "The investigation note states that the available material does not establish that any named individual took the laptop, and it does not identify the person seen near the lift.",
+              "claim": "0142/2026 did not name any accused when it was registered, and Manoj Verma was identified only later during the investigation  .",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E3"
+                "E1"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 11/13 content token(s) in E3"
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 1,
+              "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
             },
             {
-              "claim": "The evidence only records that the laptop was reported missing from Room 304   , that security guard Rohan Das saw an unidentified person carrying a black backpack near the third-floor lift at 21:12   , and that the third-floor corridor was accessible to authorized staff  .",
+              "claim": "The recovery memo does not record the laptop being found in the possession or residence of Manoj Verma; the laptop was recovered from an unclaimed-parcel shelf at the ground-floor reception  .",
+              "kind": "abstention",
+              "grounded": null,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "As of 9 October 2026, no chargesheet had been filed, and the security guard's statement describing a person with a black backpack does not name Manoj Verma  .",
               "kind": "claim",
               "grounded": true,
               "evidence_ids": [
-                "E2"
+                "E4"
               ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
+              "filename": "Bail_Source_Pack.pdf",
               "page": 2,
-              "reason": "matched 22/23 content token(s) in E2 and all 2 number(s) verbatim"
+              "reason": "matched 11/13 content token(s) in E4 and all 2 number(s) verbatim"
+            },
+            {
+              "claim": "Manoj Verma denies taking the laptop, and nothing in the record establishes that he is guilty or innocent  .",
+              "kind": "claim",
+              "grounded": true,
+              "evidence_ids": [
+                "E6"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 3,
+              "reason": "matched 9/9 content token(s) in E6"
             }
           ],
           "retrieval": {
@@ -1039,29 +1003,36 @@
         "answerable": false,
         "expected_facts": [],
         "baseline": {
-          "answer": "The context does not contain this information. The document explicitly states it does not provide a bank account number or other unrelated personal financial information (LegalLens_Fictional_Crime_Case.pdf, page 2).",
+          "answer": "The context does not contain the victim's bank account number.\n\nThe excerpts only identify the complainant (Arun Mehta) and the stolen laptop's estimated value (Rs. 85,000) — no bank or account details are provided.",
           "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The context does not contain this information.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E1"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 2/2 content token(s) in E1"
-            },
-            {
-              "claim": "The document explicitly states it does not provide a bank account number or other unrelated personal financial information (LegalLens_Fictional_Crime_Case.pdf, page 2).",
+              "claim": "The context does not contain the victim's bank account number.",
               "kind": "abstention",
               "grounded": null,
               "evidence_ids": [],
               "filename": null,
               "page": null,
               "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+            },
+            {
+              "claim": "The excerpts only identify the complainant (Arun Mehta) and the stolen laptop's estimated value (Rs.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E3 matched only 5/8 content token(s) (missing: identify, laptop', stolen) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "85,000) — no bank or account details are provided.",
+              "kind": "claim",
+              "grounded": false,
+              "evidence_ids": [],
+              "filename": null,
+              "page": null,
+              "reason": "best chunk E3 matched only 0/3 content token(s) (missing: account, bank, detail) — below the 75% traceability threshold"
             }
           ],
           "retrieval": {
@@ -1072,7 +1043,7 @@
         "legallens": {
           "answer": "Insufficient evidence in the provided documents.",
           "refused": true,
-          "stage": "model",
+          "stage": "premise",
           "error": null,
           "claims": [],
           "retrieval": {
@@ -1087,27 +1058,40 @@
         "answerable": false,
         "expected_facts": [],
         "baseline": {
-          "answer": "The context does not contain BlueHarbor Traders' annual revenue. The excerpts only mention the company as the Client in a Service Agreement (effective 14 February 2026), with an aggregate liability cap of USD 50,000 per contract year — no revenue figures are provided.",
+          "answer": "The context does not contain the answer. None of the excerpts mention \"BlueHarbor Traders\" or any revenue figure — they cover FIR No. 0142/2026 (laptop theft, arrest, custody, and bail details for Manoj Verma) only.",
           "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The context does not contain BlueHarbor Traders' annual revenue.",
-              "kind": "abstention",
-              "grounded": null,
-              "evidence_ids": [],
-              "filename": null,
-              "page": null,
-              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+              "claim": "The context does not contain the answer.",
+              "kind": "claim",
+              "grounded": true,
+              "evidence_ids": [
+                "E3"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 3,
+              "reason": "matched 1/1 content token(s) in E3"
             },
             {
-              "claim": "The excerpts only mention the company as the Client in a Service Agreement (effective 14 February 2026), with an aggregate liability cap of USD 50,000 per contract year — no revenue figures are provided.",
+              "claim": "None of the excerpts mention \"BlueHarbor Traders\" or any revenue figure — they cover FIR No.",
               "kind": "claim",
               "grounded": false,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 10/14 content token(s) (missing: cap, company, figure, revenue) — below the 75% traceability threshold"
+              "reason": "best chunk E1 matched only 1/7 content token(s) (missing: blueharbor, cover, figure, none, revenue, trader) — below the 75% traceability threshold"
+            },
+            {
+              "claim": "0142/2026 (laptop theft, arrest, custody, and bail details for Manoj Verma) only.",
+              "kind": "claim",
+              "grounded": true,
+              "evidence_ids": [
+                "E4"
+              ],
+              "filename": "Bail_Source_Pack.pdf",
+              "page": 1,
+              "reason": "matched 6/8 content token(s) in E4 and all 1 number(s) verbatim"
             }
           ],
           "retrieval": {
@@ -1118,7 +1102,7 @@
         "legallens": {
           "answer": "Insufficient evidence in the provided documents.",
           "refused": true,
-          "stage": "model",
+          "stage": "premise",
           "error": null,
           "claims": [],
           "retrieval": {
@@ -1133,29 +1117,18 @@
         "answerable": false,
         "expected_facts": [],
         "baseline": {
-          "answer": "The context does not contain the serial number of the laptop. The document only identifies it as \"one company laptop\" missing from Room 304 (excerpt 1) and never lists a serial number or asset tag.",
+          "answer": "The context does not contain the laptop's serial number.",
           "refused": true,
           "error": null,
           "claims": [
             {
-              "claim": "The context does not contain the serial number of the laptop.",
-              "kind": "claim",
-              "grounded": true,
-              "evidence_ids": [
-                "E2"
-              ],
-              "filename": "LegalLens_Fictional_Crime_Case.pdf",
-              "page": 2,
-              "reason": "matched 3/4 content token(s) in E2"
-            },
-            {
-              "claim": "The document only identifies it as \"one company laptop\" missing from Room 304 (excerpt 1) and never lists a serial number or asset tag.",
-              "kind": "claim",
-              "grounded": false,
+              "claim": "The context does not contain the laptop's serial number.",
+              "kind": "abstention",
+              "grounded": null,
               "evidence_ids": [],
               "filename": null,
               "page": null,
-              "reason": "best chunk E1 matched only 5/12 content token(s) (missing: asset, identify, list, never, number, serial) — below the 75% traceability threshold"
+              "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
             }
           ],
           "retrieval": {
@@ -1166,7 +1139,7 @@
         "legallens": {
           "answer": "Insufficient evidence in the provided documents.",
           "refused": true,
-          "stage": "model",
+          "stage": "premise",
           "error": null,
           "claims": [],
           "retrieval": {
@@ -1182,593 +1155,555 @@
         "question": "When was the laptop reported missing?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The laptop was noticed missing by Arun Mehta at  21:25  (E4), and the incident was formally reported to building security at  21:40  on 18 September 2026.",
-        "grounded": false,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "best chunk E2 matched only 8/11 content token(s) (missing: build, formally, notic) — below the 75% traceability threshold"
-      },
-      {
-        "question_id": "Q1",
-        "question": "When was the laptop reported missing?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "Sources: LegalLens_Fictional_Crime_Case.pdf, pages 1–2.",
-        "grounded": false,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "best chunk E2 matched only 4/6 content token(s) (missing: page, pdf) — below the 75% traceability threshold"
+        "claim": "It was reported missing on the evening of  18 September 2026 , between about  20:55 and 21:25 , from Room 304 of Harbor View Business Centre, Chennai (per FIR No.",
+        "grounded": true,
+        "evidence_ids": [
+          "E1"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 1,
+        "reason": "matched 11/11 content token(s) in E1 and all 5 number(s) verbatim"
       },
       {
         "question_id": "Q1",
         "question": "When was the laptop reported missing?",
         "system": "legallens",
         "kind": "claim",
-        "claim": "The sources state that Arun Mehta reported the laptop missing at 21:25, and the incident was formally reported to building security at 21:40 on 18 September 2026   .",
+        "claim": "The laptop was reported missing on the evening of 18 September 2026, between about 20:55 and 21:25, from Room 304 of Harbor View Business Centre, Chennai  .",
         "grounded": true,
         "evidence_ids": [
-          "E2"
+          "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 1,
-        "reason": "matched 8/10 content token(s) in E2 and all 4 number(s) verbatim"
+        "reason": "matched 11/11 content token(s) in E1 and all 5 number(s) verbatim"
       },
       {
         "question_id": "Q2",
         "question": "What did the security guard see at 21:12?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "At 21:12, security guard Rohan Das reported seeing a person carrying a black backpack near the third-floor lift (evidence E2, LegalLens_Fictional_Crime_Case.pdf, pages 1–2).",
+        "claim": "He saw a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026.",
         "grounded": true,
         "evidence_ids": [
-          "E4"
+          "E2"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 17/21 content token(s) in E4 and all 4 number(s) verbatim"
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 2,
+        "reason": "matched 9/10 content token(s) in E2 and all 3 number(s) verbatim"
       },
       {
         "question_id": "Q2",
         "question": "What did the security guard see at 21:12?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The document does not identify the person seen.",
-        "grounded": true,
-        "evidence_ids": [
-          "E5"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 3/3 content token(s) in E5"
-      },
-      {
-        "question_id": "Q2",
-        "question": "What did the security guard see at 21:12?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The security guard, Rohan Das, reported seeing a person carrying a black backpack near the third-floor lift at 21:12   .",
+        "claim": "His statement does not name Manoj Verma.",
         "grounded": true,
         "evidence_ids": [
           "E2"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 2,
-        "reason": "matched 14/14 content token(s) in E2 and all 1 number(s) verbatim"
+        "reason": "matched 4/4 content token(s) in E2"
       },
       {
-        "question_id": "Q2",
-        "question": "What did the security guard see at 21:12?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The available material does not identify the person seen near the lift  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E5"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 6/7 content token(s) in E5"
+        "question_id": "Q3",
+        "question": "At what time was the laptop last seen on the desk?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not record a specific \"last seen on the desk\" time.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q3",
         "question": "At what time was the laptop last seen on the desk?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The laptop was last seen on the desk at approximately  20:55  (Arun Mehta's statement — LegalLens_Fictional_Crime_Case.pdf, page 1).",
+        "claim": "It only says Arun Mehta reported the laptop missing from Room 304 on the evening of 18 September 2026,  between about 20:55 and 21:25  (per FIR No.",
         "grounded": true,
         "evidence_ids": [
-          "E2"
+          "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 1,
-        "reason": "matched 11/14 content token(s) in E2 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q3",
-        "question": "At what time was the laptop last seen on the desk?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The laptop was last seen on the desk at approximately 20:55, according to the complainant's statement   .",
-        "grounded": true,
-        "evidence_ids": [
-          "E2"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 6/7 content token(s) in E2 and all 1 number(s) verbatim"
+        "reason": "matched 9/9 content token(s) in E1 and all 5 number(s) verbatim"
       },
       {
         "question_id": "Q4",
         "question": "Where did the incident take place?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The incident took place in  Room 304 of Harbor View Business Centre, Chennai  — a theft of a company laptop (excerpt 1, page 1).",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 11/13 content token(s) in E1 and all 3 number(s) verbatim"
-      },
-      {
-        "question_id": "Q4",
-        "question": "Where did the incident take place?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The incident took place in Room 304 of Harbor View Business Centre, Chennai, where the complainant reported that a company laptop was missing  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 13/14 content token(s) in E1 and all 1 number(s) verbatim"
-      },
-      {
-        "question_id": "Q5",
-        "question": "Who filed the complaint?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "Arun Mehta filed the complaint (the complainant in case LL-CR-2026-014), reporting the laptop missing from Room 304.",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 8/10 content token(s) in E1 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q5",
-        "question": "Who filed the complaint?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "Arun Mehta filed the complaint.",
+        "claim": "Room 304 of Harbor View Business Centre, Chennai (with related evidence from the third-floor corridor and ground-floor reception).",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 2/4 content token(s) (missing: complaint, fil) — below the 75% traceability threshold"
+        "reason": "best chunk E2 matched only 9/13 content token(s) (missing: evidence, ground, reception, relat) — below the 75% traceability threshold"
       },
       {
         "question_id": "Q5",
         "question": "Who filed the complaint?",
-        "system": "legallens",
+        "system": "baseline",
         "kind": "claim",
-        "claim": "He is identified as the complainant and reported the laptop missing from Room 304, stating it was on the desk at 20:55 and noticing it missing upon his return at 21:25, with the incident formally reported at 21:40.",
+        "claim": "Arun Mehta filed the complaint (FIR No.",
         "grounded": true,
         "evidence_ids": [
           "E3"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 2,
-        "reason": "matched 9/12 content token(s) in E3 and all 4 number(s) verbatim"
+        "reason": "matched 4/5 content token(s) in E3"
+      },
+      {
+        "question_id": "Q6",
+        "question": "When did Priya Nair leave Room 304?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not contain this information.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q6",
         "question": "When did Priya Nair leave Room 304?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "At approximately  21:05  on 18 September 2026 (evidence E3: \"Priya Nair said she left Room 304 at approximately 21:05\").",
-        "grounded": true,
-        "evidence_ids": [
-          "E3"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 6/7 content token(s) in E3 and all 6 number(s) verbatim"
-      },
-      {
-        "question_id": "Q6",
-        "question": "When did Priya Nair leave Room 304?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "Priya Nair left Room 304 at approximately 21:05, after which she went to the ground-floor cafeteria    .",
+        "claim": "Priya Nair is only mentioned as a witness whose statement was recorded by Sub-Inspector R.",
         "grounded": true,
         "evidence_ids": [
           "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 2,
-        "reason": "matched 9/9 content token(s) in E1 and all 2 number(s) verbatim"
+        "reason": "matched 5/6 content token(s) in E1"
+      },
+      {
+        "question_id": "Q6",
+        "question": "When did Priya Nair leave Room 304?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "Anand (excerpt 1); no time or detail about her leaving Room 304 is given.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E4 matched only 2/5 content token(s) (missing: detail, leav, time) — below the 75% traceability threshold"
       },
       {
         "question_id": "Q7",
         "question": "What is the case ID?",
-        "system": "baseline",
+        "system": "legallens",
         "kind": "claim",
-        "claim": "LL-CR-2026-014  (from LegalLens_Fictional_Crime_Case.pdf, page 1).",
+        "claim": "The sources state the case ID is LL-CR-2026-014, recorded against FIR No.",
+        "grounded": true,
+        "evidence_ids": [
+          "E1"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 1,
+        "reason": "matched 2/2 content token(s) in E1 and all 1 number(s) verbatim"
+      },
+      {
+        "question_id": "Q7",
+        "question": "What is the case ID?",
+        "system": "legallens",
+        "kind": "claim",
+        "claim": "0142/2026, not a different case identifier  .",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 4/6 content token(s) (missing: page, pdf) — below the 75% traceability threshold"
+        "reason": "best chunk E1 matched only 1/3 content token(s) (missing: different, identifier) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q8",
+        "question": "What time was the incident formally reported?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not state a specific  time  of formal reporting.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q8",
         "question": "What time was the incident formally reported?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The incident was formally reported at  21:40  — per the timeline, \"The incident is formally reported to building security\" at 21:40 (LegalLens_Fictional_Crime_Case.pdf, page 2), which matches the \"Reported At\" field of 21:40 on page 1.",
+        "claim": "It only gives:",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E2 matched only 7/14 content token(s) (missing: build, field, formally, matche, page, pdf) — below the 75% traceability threshold"
+        "reason": "best chunk E1 matched only 0/1 content token(s) (missing: give) — below the 75% traceability threshold"
       },
       {
         "question_id": "Q8",
         "question": "What time was the incident formally reported?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The incident was formally reported to building security at 21:40  , and the case file records the matter as reported at 21:40  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E2"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 1,
-        "reason": "matched 6/8 content token(s) in E2 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q9",
-        "question": "Does the document identify the person seen near the lift?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The document records that security guard Rohan Das saw \"a person with a black backpack\" near the third-floor lift at 21:12  , but it explicitly states that the material \"does not identify the person seen near the lift\" (page 2).",
-        "grounded": true,
-        "evidence_ids": [
-          "E2"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 13/17 content token(s) in E2 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q9",
-        "question": "Does the document identify the person seen near the lift?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "The individual's identity is not contained in the provided context.",
+        "claim": "The incident window: evening of  18 September 2026, between about 20:55 and 21:25  (excerpt 1).",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 1/3 content token(s) (missing: identity, individual') — below the 75% traceability threshold"
+        "reason": "best chunk E1 matched only 2/4 content token(s) (missing: incident, window) — below the 75% traceability threshold"
       },
       {
-        "question_id": "Q9",
-        "question": "Does the document identify the person seen near the lift?",
-        "system": "legallens",
+        "question_id": "Q8",
+        "question": "What time was the incident formally reported?",
+        "system": "baseline",
         "kind": "claim",
-        "claim": "The sources state that the document does not identify the person seen near the lift.",
+        "claim": "The FIR was  registered on 19 September 2026  (excerpt 2).",
         "grounded": true,
         "evidence_ids": [
           "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 5/5 content token(s) in E1"
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 1,
+        "reason": "matched 3/3 content token(s) in E1 and all 3 number(s) verbatim"
+      },
+      {
+        "question_id": "Q8",
+        "question": "What time was the incident formally reported?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "No hour is recorded for when the complaint/FIR was formally made.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 1/5 content token(s) (missing: complaint, formally, hour, made) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q9",
+        "question": "Does the document identify the person seen near the lift?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "The security guard Rohan Das's statement describes only \"a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026,\" and explicitly \"does not name Manoj Verma.\" Manoj Verma separately states that he carried a black backpack with work tools, but that is his own account, not an identification by the witness.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 17/26 content token(s) (missing: account, carri, das', explicitly, identification, separately) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q9",
+        "question": "Does the document identify the person seen near the lift?",
+        "system": "legallens",
+        "kind": "abstention",
+        "claim": "The evidence does not identify the person seen near the lift.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q9",
         "question": "Does the document identify the person seen near the lift?",
         "system": "legallens",
         "kind": "claim",
-        "claim": "The evidence expressly notes that the material does not identify the person seen near the lift and does not establish that any named individual took the laptop.",
+        "claim": "The statement of the security guard Rohan Das describes a person carrying a black backpack near the third-floor lift at 21:12 on 18 September 2026, and that statement does not name Manoj Verma  .",
         "grounded": true,
         "evidence_ids": [
           "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
         "page": 2,
-        "reason": "matched 12/13 content token(s) in E1"
+        "reason": "matched 18/18 content token(s) in E1 and all 3 number(s) verbatim"
       },
       {
         "question_id": "Q9",
         "question": "Does the document identify the person seen near the lift?",
         "system": "legallens",
         "kind": "claim",
-        "claim": "The security guard, Rohan Das, reported seeing an unidentified person carrying a black backpack near the third-floor lift at 21:12, but the person's identity is not recorded   .",
+        "claim": "The sources separately record only that Manoj Verma states he carried a black backpack containing his work tools on 18 September 2026 and that he denies taking the laptop — a stated position, not an identification or proof of identity  .",
         "grounded": true,
         "evidence_ids": [
-          "E2"
+          "E5"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 14/17 content token(s) in E2 and all 1 number(s) verbatim"
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 3,
+        "reason": "matched 13/17 content token(s) in E5 and all 2 number(s) verbatim"
+      },
+      {
+        "question_id": "Q10",
+        "question": "Until what time was Kiran Rao working on the second floor?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not contain that information.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q10",
         "question": "Until what time was Kiran Rao working on the second floor?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "21:30 — the document states Kiran Rao \"was working on the second floor until 21:30\" (LegalLens_Fictional_Crime_Case.pdf, page 1).",
+        "claim": "Ken Rao is only mentioned as a witness whose statement was recorded; there is no detail about him working on the second floor or until what time.",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 3/11 content token(s) (missing: case, crime, fictional, kiran, legallen, page) — below the 75% traceability threshold"
+        "reason": "best chunk E2 matched only 3/10 content token(s) (missing: detail, him, ken, rao, second, time) — below the 75% traceability threshold"
       },
       {
-        "question_id": "Q10",
-        "question": "Until what time was Kiran Rao working on the second floor?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The evidence states that Kiran Rao said he was working on the second floor until 21:30   .",
-        "grounded": false,
+        "question_id": "Q11",
+        "question": "What is the aggregate liability cap per contract year?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not contain any information about an aggregate liability cap or contract year.",
+        "grounded": null,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 3/6 content token(s) (missing: evidence, kiran, rao) — below the 75% traceability threshold"
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q11",
         "question": "What is the aggregate liability cap per contract year?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "USD 50,000 per contract year (Clause 7 – Limitation of Liability, sample.pdf, page 1).",
+        "claim": "The excerpts are a criminal bail record (FIR No.",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 6/9 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
+        "reason": "best chunk E1 matched only 2/3 content token(s) (missing: criminal) — below the 75% traceability threshold"
       },
       {
         "question_id": "Q11",
         "question": "What is the aggregate liability cap per contract year?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The aggregate liability of either party under the Agreement shall not exceed USD 50,000 per contract year  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 1,
-        "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
-      },
-      {
-        "question_id": "Q12",
-        "question": "How many days notice is required to terminate the agreement?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "Ninety (90) days' written notice to the other party is required to terminate the Agreement (Clause 8 – Termination, sample.pdf, p.",
+        "claim": "0142/2026) with no contractual terms.",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 8/12 content token(s) (missing: days', pdf, requir, sample) — below the 75% traceability threshold"
+        "reason": "best chunk E3 matched only 0/2 content token(s) (missing: contractual, term) — below the 75% traceability threshold"
       },
       {
         "question_id": "Q12",
         "question": "How many days notice is required to terminate the agreement?",
         "system": "baseline",
-        "kind": "claim",
-        "claim": "Note that termination does not relieve the Client of payment obligations accrued before the effective date of termination.",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 1,
-        "reason": "matched 8/8 content token(s) in E1"
-      },
-      {
-        "question_id": "Q12",
-        "question": "How many days notice is required to terminate the agreement?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "Either party may terminate the Agreement upon ninety (90) days written notice to the other party.",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 1,
-        "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
+        "kind": "abstention",
+        "claim": "The provided excerpts do not contain any agreement or a notice period for termination, so the number of days' notice required cannot be determined from this context.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q13",
         "question": "Which law governs the agreement?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The laws of Singapore (Clause 13 — Governing Law, sample.pdf page 2).",
-        "grounded": false,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "best chunk E1 matched only 4/7 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
-      },
-      {
-        "question_id": "Q13",
-        "question": "Which law governs the agreement?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The sources state that the Agreement shall be governed by and construed in accordance with the laws of Singapore  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 2,
-        "reason": "matched 6/6 content token(s) in E1"
-      },
-      {
-        "question_id": "Q14",
-        "question": "Who administers the arbitration?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "The  Singapore International Arbitration Centre (SIAC)  administers the arbitration (sample.pdf, page 2, Clause 14 - Dispute Resolution).",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 2,
-        "reason": "matched 9/12 content token(s) in E1 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q14",
-        "question": "Who administers the arbitration?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The sources state that the arbitration is administered by the Singapore International Arbitration Centre (SIAC).",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 2,
-        "reason": "matched 6/6 content token(s) in E1"
-      },
-      {
-        "question_id": "Q15",
-        "question": "How long must confidentiality be maintained?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "Five (5) years from the date of disclosure (Clause 12, sample.pdf, page 2).",
-        "grounded": false,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "best chunk E1 matched only 5/8 content token(s) (missing: page, pdf, sample) — below the 75% traceability threshold"
-      },
-      {
-        "question_id": "Q15",
-        "question": "How long must confidentiality be maintained?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "Each party must keep confidential all technical and commercial information disclosed by the other party for a period of five (5) years from the date of disclosure  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E1"
-        ],
-        "filename": "sample.pdf",
-        "page": 2,
-        "reason": "matched 12/12 content token(s) in E1 and all 1 number(s) verbatim"
-      },
-      {
-        "question_id": "Q16",
-        "question": "Who stole the laptop?",
-        "system": "baseline",
-        "kind": "abstention",
-        "claim": "The document does not say who stole the laptop.",
-        "grounded": null,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
-      },
-      {
-        "question_id": "Q16",
-        "question": "Who stole the laptop?",
-        "system": "baseline",
-        "kind": "abstention",
-        "claim": "It explicitly states that the material \"does not identify the person seen near the lift\" and \"does not establish that any named individual took the laptop\" (LegalLens_Fictional_Crime_Case.pdf, page 2).",
-        "grounded": null,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
-      },
-      {
-        "question_id": "Q16",
-        "question": "Who stole the laptop?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "For reference, the evidence only establishes the timeline: the laptop was last seen at 20:55 (E4), Rohan Das saw an unidentified person with a black backpack at 21:12 (E2), and it was reported missing at 21:25 (E4).",
-        "grounded": true,
-        "evidence_ids": [
-          "E2"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 12/16 content token(s) in E2 and all 6 number(s) verbatim"
-      },
-      {
-        "question_id": "Q16",
-        "question": "Who stole the laptop?",
-        "system": "legallens",
-        "kind": "abstention",
-        "claim": "The sources do not identify who stole the laptop.",
-        "grounded": null,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
-      },
-      {
-        "question_id": "Q16",
-        "question": "Who stole the laptop?",
-        "system": "legallens",
-        "kind": "claim",
-        "claim": "The investigation note states that the available material does not establish that any named individual took the laptop, and it does not identify the person seen near the lift.",
+        "claim": "The context does not contain the answer.",
         "grounded": true,
         "evidence_ids": [
           "E3"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 11/13 content token(s) in E3"
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 3,
+        "reason": "matched 1/1 content token(s) in E3"
+      },
+      {
+        "question_id": "Q13",
+        "question": "Which law governs the agreement?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "The excerpts are a criminal bail record (FIR No.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 2/3 content token(s) (missing: criminal) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q13",
+        "question": "Which law governs the agreement?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "0142/2026, Section 303(2) BNS 2023) and mention no agreement or governing-law clause.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E2 matched only 1/6 content token(s) (missing: agreement, bns, clause, govern, law) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q14",
+        "question": "Who administers the arbitration?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "The context does not contain the answer.",
+        "grounded": true,
+        "evidence_ids": [
+          "E6"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 3,
+        "reason": "matched 1/1 content token(s) in E6"
+      },
+      {
+        "question_id": "Q14",
+        "question": "Who administers the arbitration?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "The excerpts concern a bail application in a criminal theft case (FIR No.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 4/7 content token(s) (missing: application, concern, criminal) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q14",
+        "question": "Who administers the arbitration?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "0142/2026) and mention no arbitration or arbitral institution.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 0/3 content token(s) (missing: arbitral, arbitration, institution) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q15",
+        "question": "How long must confidentiality be maintained?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context excerpts do not contain any information about confidentiality or how long it must be maintained.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+      },
+      {
+        "question_id": "Q15",
+        "question": "How long must confidentiality be maintained?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "They cover only arrest, custody, investigation status, and proposed bail conditions in FIR No.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 5/9 content token(s) (missing: bail, condition, cover, propos) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "The context does not say who stole the laptop.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "baseline",
+        "kind": "abstention",
+        "claim": "It records only that Manoj Verma was arrested and denies taking it, that the laptop was recovered from an unclaimed-parcel shelf — not from his possession — and that \"nothing in this record establishes that Manoj Verma is guilty or innocent.\"",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "legallens",
+        "kind": "abstention",
+        "claim": "The provided evidence does not establish who stole the laptop.",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
         "question_id": "Q16",
         "question": "Who stole the laptop?",
         "system": "legallens",
         "kind": "claim",
-        "claim": "The evidence only records that the laptop was reported missing from Room 304   , that security guard Rohan Das saw an unidentified person carrying a black backpack near the third-floor lift at 21:12   , and that the third-floor corridor was accessible to authorized staff  .",
-        "grounded": true,
-        "evidence_ids": [
-          "E2"
-        ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 22/23 content token(s) in E2 and all 2 number(s) verbatim"
-      },
-      {
-        "question_id": "Q17",
-        "question": "What is the victim's bank account number?",
-        "system": "baseline",
-        "kind": "claim",
-        "claim": "The context does not contain this information.",
+        "claim": "0142/2026 did not name any accused when it was registered, and Manoj Verma was identified only later during the investigation  .",
         "grounded": true,
         "evidence_ids": [
           "E1"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 1,
+        "reason": "matched 8/8 content token(s) in E1 and all 1 number(s) verbatim"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "legallens",
+        "kind": "abstention",
+        "claim": "The recovery memo does not record the laptop being found in the possession or residence of Manoj Verma; the laptop was recovered from an unclaimed-parcel shelf at the ground-floor reception  .",
+        "grounded": null,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "legallens",
+        "kind": "claim",
+        "claim": "As of 9 October 2026, no chargesheet had been filed, and the security guard's statement describing a person with a black backpack does not name Manoj Verma  .",
+        "grounded": true,
+        "evidence_ids": [
+          "E4"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
         "page": 2,
-        "reason": "matched 2/2 content token(s) in E1"
+        "reason": "matched 11/13 content token(s) in E4 and all 2 number(s) verbatim"
+      },
+      {
+        "question_id": "Q16",
+        "question": "Who stole the laptop?",
+        "system": "legallens",
+        "kind": "claim",
+        "claim": "Manoj Verma denies taking the laptop, and nothing in the record establishes that he is guilty or innocent  .",
+        "grounded": true,
+        "evidence_ids": [
+          "E6"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 3,
+        "reason": "matched 9/9 content token(s) in E6"
       },
       {
         "question_id": "Q17",
         "question": "What is the victim's bank account number?",
         "system": "baseline",
         "kind": "abstention",
-        "claim": "The document explicitly states it does not provide a bank account number or other unrelated personal financial information (LegalLens_Fictional_Crime_Case.pdf, page 2).",
+        "claim": "The context does not contain the victim's bank account number.",
         "grounded": null,
         "evidence_ids": [],
         "filename": null,
@@ -1776,54 +1711,80 @@
         "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       },
       {
-        "question_id": "Q18",
-        "question": "What is the annual revenue of BlueHarbor Traders?",
-        "system": "baseline",
-        "kind": "abstention",
-        "claim": "The context does not contain BlueHarbor Traders' annual revenue.",
-        "grounded": null,
-        "evidence_ids": [],
-        "filename": null,
-        "page": null,
-        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
-      },
-      {
-        "question_id": "Q18",
-        "question": "What is the annual revenue of BlueHarbor Traders?",
+        "question_id": "Q17",
+        "question": "What is the victim's bank account number?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The excerpts only mention the company as the Client in a Service Agreement (effective 14 February 2026), with an aggregate liability cap of USD 50,000 per contract year — no revenue figures are provided.",
+        "claim": "The excerpts only identify the complainant (Arun Mehta) and the stolen laptop's estimated value (Rs.",
         "grounded": false,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 10/14 content token(s) (missing: cap, company, figure, revenue) — below the 75% traceability threshold"
+        "reason": "best chunk E3 matched only 5/8 content token(s) (missing: identify, laptop', stolen) — below the 75% traceability threshold"
       },
       {
-        "question_id": "Q19",
-        "question": "What is the serial number of the stolen laptop?",
+        "question_id": "Q17",
+        "question": "What is the victim's bank account number?",
         "system": "baseline",
         "kind": "claim",
-        "claim": "The context does not contain the serial number of the laptop.",
+        "claim": "85,000) — no bank or account details are provided.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E3 matched only 0/3 content token(s) (missing: account, bank, detail) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q18",
+        "question": "What is the annual revenue of BlueHarbor Traders?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "The context does not contain the answer.",
         "grounded": true,
         "evidence_ids": [
-          "E2"
+          "E3"
         ],
-        "filename": "LegalLens_Fictional_Crime_Case.pdf",
-        "page": 2,
-        "reason": "matched 3/4 content token(s) in E2"
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 3,
+        "reason": "matched 1/1 content token(s) in E3"
+      },
+      {
+        "question_id": "Q18",
+        "question": "What is the annual revenue of BlueHarbor Traders?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "None of the excerpts mention \"BlueHarbor Traders\" or any revenue figure — they cover FIR No.",
+        "grounded": false,
+        "evidence_ids": [],
+        "filename": null,
+        "page": null,
+        "reason": "best chunk E1 matched only 1/7 content token(s) (missing: blueharbor, cover, figure, none, revenue, trader) — below the 75% traceability threshold"
+      },
+      {
+        "question_id": "Q18",
+        "question": "What is the annual revenue of BlueHarbor Traders?",
+        "system": "baseline",
+        "kind": "claim",
+        "claim": "0142/2026 (laptop theft, arrest, custody, and bail details for Manoj Verma) only.",
+        "grounded": true,
+        "evidence_ids": [
+          "E4"
+        ],
+        "filename": "Bail_Source_Pack.pdf",
+        "page": 1,
+        "reason": "matched 6/8 content token(s) in E4 and all 1 number(s) verbatim"
       },
       {
         "question_id": "Q19",
         "question": "What is the serial number of the stolen laptop?",
         "system": "baseline",
-        "kind": "claim",
-        "claim": "The document only identifies it as \"one company laptop\" missing from Room 304 (excerpt 1) and never lists a serial number or asset tag.",
-        "grounded": false,
+        "kind": "abstention",
+        "claim": "The context does not contain the laptop's serial number.",
+        "grounded": null,
         "evidence_ids": [],
         "filename": null,
         "page": null,
-        "reason": "best chunk E1 matched only 5/12 content token(s) (missing: asset, identify, list, never, number, serial) — below the 75% traceability threshold"
+        "reason": "asserts absence of information; excluded from groundedness (neither supported nor unsupported)"
       }
     ],
     "dataset_size": 19
