@@ -19,7 +19,7 @@ import httpx
 from fastapi import Cookie, Depends, FastAPI, File, Header, HTTPException, Request, Response, UploadFile, status
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-
+from .document_classifier import classify_legal_case_document
 auth_logger = logging.getLogger("legallens.auth")
 
 from . import auth, chunker, config, pdf_extractor
@@ -361,6 +361,22 @@ def upload_document(file: UploadFile = File(...)) -> DocumentInfo:
     except Exception as exc:
         path.unlink(missing_ok=True)
         raise HTTPException(status_code=422, detail=f"Could not extract text: {exc}") from exc
+
+    # Classify the extracted PDF text before creating chunks or indexing.
+    classification = classify_legal_case_document(
+        filename,
+        "\\n".join(
+            getattr(page, "text", str(page))
+            for page in pages
+        ),
+    )
+
+    if not classification.accepted:
+        path.unlink(missing_ok=True)
+        raise HTTPException(
+            status_code=422,
+            detail=classification.reason,
+        )
 
     chunks = chunker.chunk_pages(pages, doc_id=doc_id, filename=filename)
     get_store().add_chunks(chunks)
