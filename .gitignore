@@ -1,9 +1,14 @@
 .venv/
 venv/
 .env
+.env.*
+!.env.example
 __pycache__/
 *.pyc
 .pytest_cache/
 chroma*/
 *.sqlite3
 node_modules/
+data/users.json
+data/sessions.json
+data/uploads/

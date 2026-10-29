@@ -590,7 +590,51 @@ function wireChat() {
   });
 }
 
+/* ================= user auth & session ================= */
+async function checkAuth() {
+  try {
+    const res = await fetch("/api/auth/me");
+    if (!res.ok) {
+      window.location.href = "/login";
+      return;
+    }
+    const data = await res.json();
+    if (!data.authenticated || !data.user) {
+      window.location.href = "/login";
+      return;
+    }
+    const profile = $("userProfile");
+    const emailEl = $("userEmail");
+    const avatarEl = $("userAvatar");
+    if (profile && emailEl) {
+      profile.hidden = false;
+      const displayName = data.user.name || data.user.email;
+      emailEl.textContent = displayName;
+      emailEl.title = data.user.email;
+      if (avatarEl) {
+        avatarEl.textContent = (displayName[0] || "U").toUpperCase();
+      }
+    }
+  } catch (_) {
+    // If backend unreachable, allow offline status indicator to show
+  }
+}
+
+function wireLogout() {
+  const btn = $("logoutBtn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (_) {}
+    window.location.href = "/login";
+  });
+}
+
 /* ================= init ================= */
+checkAuth();
+wireLogout();
 wireUpload();
 wireChat();
 setPipelineIdle();
