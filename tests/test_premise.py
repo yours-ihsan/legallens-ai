@@ -29,6 +29,15 @@ CONTRACT = (
     "under this Agreement shall not exceed USD 50,000 for any contract year."
 )
 CONVICTION = "After trial, John committed the theft and was convicted of theft in 2021."
+RECOVERY = (
+    "The laptop was not found in Manoj Verma's bag during the search of the "
+    "suspects. It was recovered from the second-floor office rack."
+)
+FIR = (
+    "FIR number 21/2026 was registered at the station under Section 379 of "
+    "the Indian Penal Code. The complainant's statement was recorded the "
+    "same night."
+)
 
 
 def _ev(eid, text, score=0.55, page=1, filename="case.pdf"):
@@ -68,6 +77,13 @@ def test_drops_assumption_contained_in_a_longer_one():
     assert "the accused is guilty" in assumptions
     assert "the accused" not in assumptions          # contained -> dropped
     assert len(assumptions) <= MAX_ASSUMPTIONS
+
+
+def test_extracts_possessive_assumption_intact():
+    # The possessive apostrophe must survive extraction: "laptop's" is one
+    # word and is never the bare noun "laptop".
+    assert extract_assumptions("What is the laptop's serial number?") == \
+        ["the laptop's serial number"]
 
 
 # ------------------------------------------------------------------- marking
@@ -110,6 +126,66 @@ def test_unrelated_assumption_is_not_found():
     p = mark_assumption("the parking fines", CONTRACT_EV)
     assert p["verdict"] == NOT_FOUND
     assert p["evidence_id"] is None
+
+
+# ----------------------------------------- entailment marking (per assumption)
+def test_serial_number_not_stated_is_not_found():
+    # "laptop's" is ONE token: the chunk's bare "laptop" must not satisfy it,
+    # and no chunk states a serial number -> silence, not support.
+    p = mark_assumption("laptop's serial number", CASE_EV)
+    assert p["verdict"] == NOT_FOUND
+    assert p["evidence_id"] is None
+
+
+def test_serial_number_question_refuses_at_premise_stage(monkeypatch):
+    def _fail(*args, **kwargs):
+        raise AssertionError("LLM must not be called when the premise is NOT_FOUND")
+    monkeypatch.setattr("app.answer_generator.run_llm", _fail)
+    monkeypatch.setattr("app.answer_generator.retrieve", lambda q, doc_ids=None: CASE_EV)
+
+    resp = answer_question("What is the laptop's serial number?")
+    assert resp.insufficient is True
+    assert resp.answer == REFUSAL
+    assert resp.refusal_stage == "premise"
+    assert resp.decision == "refusal_no_premise_support"
+    assert any(p.verdict == NOT_FOUND and "serial number" in p.assumption
+               for p in resp.premises)
+
+
+def test_chunk_stating_the_opposite_contradicts():
+    # The chunk asserts the laptop was NOT in Manoj Verma's bag: same content
+    # words, negated predicate -> CONTRADICTED, not word-overlap support.
+    p = mark_assumption("laptop found in Manoj Verma's bag",
+                        [_ev("E1", RECOVERY, score=0.52)])
+    assert p["verdict"] == CONTRADICTED
+    assert p["evidence_id"] == "E1"
+
+
+def test_bag_contradiction_takes_the_cited_correction_branch(monkeypatch):
+    seen = {}
+
+    def _llm(prompt):
+        seen["prompt"] = prompt
+        return ('{"answer": "The sources state that the laptop was not found in '
+                'Manoj Verma\'s bag, but was recovered from the office rack [E1].", '
+                '"insufficient": false, "confidence": 0.85, "citations": ["E1"]}')
+
+    monkeypatch.setattr("app.answer_generator.retrieve",
+                        lambda q, doc_ids=None: [_ev("E1", RECOVERY, score=0.52)])
+    monkeypatch.setattr("app.answer_generator.run_llm", _llm)
+
+    resp = answer_question("Can we conclude that the laptop was found in Manoj Verma's bag?")
+    assert resp.insufficient is False
+    assert resp.decision == "premise_correction"
+    assert any(p.verdict == CONTRADICTED and p.evidence_id == "E1" for p in resp.premises)
+    assert "CONTRADICTED" in seen["prompt"]
+    assert resp.citations and resp.citations[0].evidence_id == "E1"
+
+
+def test_fir_number_stated_in_a_chunk_is_supported():
+    p = mark_assumption("FIR number", [_ev("E1", FIR, score=0.5, filename="fir.pdf")])
+    assert p["verdict"] == SUPPORTED
+    assert p["evidence_id"] == "E1"
 
 
 def test_marking_without_evidence_is_not_found_not_crash():
