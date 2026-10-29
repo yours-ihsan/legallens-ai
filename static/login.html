@@ -31,7 +31,7 @@
         <p class="auth-sub" id="authSubtitle">Sign in to access your confidential case workspace</p>
       </header>
 
-      <!-- Google OAuth Action (Option 3: Continue with Google) -->
+      <!-- Google OAuth Action (Continue with Google) -->
       <div class="google-auth-section">
         <button type="button" class="btn-google" id="googleSignInBtn" onclick="handleGoogleSignIn(event)" aria-label="Continue with Google">
           <svg class="google-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
@@ -50,7 +50,7 @@
         <span>or continue with email</span>
       </div>
 
-      <!-- Mode Switcher (Option 1: Create Account & Option 2: Sign In) -->
+      <!-- Mode Switcher (Sign In & Create Account) -->
       <div class="auth-tabs" role="tablist" aria-label="Authentication modes">
         <button type="button" class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true">
           Sign In
@@ -68,7 +68,7 @@
 
       <!-- Auth Form -->
       <form id="authForm" class="auth-form" novalidate>
-        <!-- Full Name Field (Option 1: Create Account Only) -->
+        <!-- Full Name Field (Create Account Only) -->
         <div class="auth-field" id="nameField" hidden>
           <label for="nameInput" class="auth-label">Full Name</label>
           <div class="input-wrapper">
@@ -149,7 +149,7 @@
           </div>
         </div>
 
-        <!-- Confirm Password Field (Option 1: Create Account Only) -->
+        <!-- Confirm Password Field (Create Account Only) -->
         <div class="auth-field" id="confirmPasswordField" hidden>
           <label for="confirmPasswordInput" class="auth-label">Confirm Password</label>
           <div class="input-wrapper">
@@ -192,7 +192,7 @@
         </button>
       </form>
 
-      <!-- Mode Toggle Footer -->
+      <!-- Auth Footer with Mode Toggle and Badges -->
       <footer class="auth-footer">
         <p class="auth-footer-text" id="authSwitchPrompt">
           Don't have an account yet?
@@ -208,8 +208,6 @@
       </footer>
     </div>
   </div>
-
-
 
   <script>
     "use strict";
@@ -254,14 +252,13 @@
       const btnText = document.getElementById("googleBtnText");
       const spinner = document.getElementById("googleSpinner");
 
-      // Requirement 4: immediately show inline "Connecting to Google..." loading message and disable duplicate clicks
+      // Show inline loading message and disable duplicate clicks
       setAlert("Connecting to Google… Please wait.", "info");
       if (btn) btn.disabled = true;
       if (spinner) spinner.hidden = false;
       if (btnText) btnText.textContent = "Connecting to Google…";
 
       try {
-        // Requirement 5: Send GET request to /api/auth/google/url using fetch with cache: "no-store"
         const endpoint = "/api/auth/google/url?_=" + Date.now();
         const res = await fetch(endpoint, {
           method: "GET",
@@ -273,7 +270,6 @@
           }
         });
 
-        // Requirement 7: Check for non-200 responses
         if (!res.ok) {
           let errDetail = `Server returned HTTP ${res.status}`;
           try {
@@ -284,7 +280,6 @@
           throw new Error(errDetail);
         }
 
-        // Requirement 7: Validate JSON
         let data;
         try {
           data = await res.json();
@@ -292,7 +287,6 @@
           throw new Error("Invalid response received from authentication server.");
         }
 
-        // Requirement 6: Validate response. If configured is true and auth_url is valid, redirect using window.location.assign
         if (data && data.configured === true && data.auth_url && typeof data.auth_url === "string") {
           if (data.auth_url.startsWith("https://accounts.google.com/")) {
             setAlert("Redirecting to Google…", "success");
@@ -303,7 +297,6 @@
           }
         }
 
-        // Requirement 7: Missing credentials or unconfigured
         const errorMsg = (data && data.message) ? data.message : "Google sign-in is not configured on this server. Please configure GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.";
         setAlert(errorMsg, "error");
 
@@ -377,9 +370,7 @@
 
           if (authSubtitle) authSubtitle.textContent = "Create a new verified account for LegalLens AI";
           if (nameField) nameField.hidden = false;
-          if (nameInput) nameInput.required = true;
           if (confirmPasswordField) confirmPasswordField.hidden = false;
-          if (confirmPasswordInput) confirmPasswordInput.required = true;
           if (passwordHint) passwordHint.hidden = false;
           if (passwordInput) passwordInput.autocomplete = "new-password";
           if (btnText) btnText.textContent = "Create Account";
@@ -400,9 +391,7 @@
 
           if (authSubtitle) authSubtitle.textContent = "Sign in to access your confidential case workspace";
           if (nameField) nameField.hidden = true;
-          if (nameInput) nameInput.required = false;
           if (confirmPasswordField) confirmPasswordField.hidden = true;
-          if (confirmPasswordInput) confirmPasswordInput.required = false;
           if (passwordHint) passwordHint.hidden = true;
           if (passwordInput) passwordInput.autocomplete = "current-password";
           if (btnText) btnText.textContent = "Sign In to LegalLens AI";
@@ -436,7 +425,7 @@
       setupPasswordToggle(togglePasswordBtn, passwordInput);
       setupPasswordToggle(toggleConfirmPasswordBtn, confirmPasswordInput);
 
-      // Email/Password Form submission
+      // Auth Form submission (Sign In or Registration)
       if (authForm) {
         authForm.addEventListener("submit", async (e) => {
           e.preventDefault();
@@ -509,6 +498,7 @@
                 return;
               }
 
+              // Switch to Sign In mode upon successful registration
               setMode(false);
               if (emailInput) emailInput.value = email;
               if (passwordInput) {
@@ -516,7 +506,7 @@
                 passwordInput.focus();
               }
               if (confirmPasswordInput) confirmPasswordInput.value = "";
-              setAlert("Account created successfully! Please enter your password to sign in.", "success");
+              setAlert(data.message || "Account created successfully! Please sign in with your email and password.", "success");
 
             } else {
               const res = await fetch("/api/auth/login", {
@@ -551,7 +541,7 @@
       }
     }
 
-    // Attach after DOM is ready (Requirement 3)
+    // Attach after DOM is ready
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", initAuth);
     } else {

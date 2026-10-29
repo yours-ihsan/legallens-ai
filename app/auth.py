@@ -39,8 +39,8 @@ class AuthUser(BaseModel):
 
 
 class LoginRequest(BaseModel):
-    email: str = Field(..., max_length=255)
-    password: str = Field(..., max_length=128)
+    email: str = Field(default="", max_length=255)
+    password: str = Field(default="", max_length=128)
 
 
 class RegisterRequest(BaseModel):
@@ -70,6 +70,7 @@ def _load_json_file(path) -> dict[str, Any]:
 
 
 def _save_json_file(path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
@@ -135,8 +136,10 @@ def register_user(name: str, email: str, password: str) -> AuthUser:
 
     with _auth_lock:
         users = _load_json_file(USERS_JSON)
-        if clean_email in users:
-            raise ValueError("An account with this email address already exists.")
+        # Prevent duplicate accounts using case-insensitive email comparison
+        for k, v in users.items():
+            if k.lower() == clean_email or (isinstance(v, dict) and v.get("email", "").lower() == clean_email):
+                raise ValueError("An account with this email address already exists.")
 
         salt_hex, hash_hex = hash_password(password)
         user_id = uuid.uuid4().hex[:12]
@@ -157,33 +160,66 @@ def register_user(name: str, email: str, password: str) -> AuthUser:
 
 
 def authenticate_user(email: str, password: str) -> Optional[AuthUser]:
-    """Authenticates a user by email and password."""
+    """Authenticates a user by email and password.
+
+    Validates credentials against registered users in USERS_JSON.
+    Supports secure constant-time PBKDF2-HMAC-SHA256 verification and automatic
+    migration if legacy plaintext passwords are encountered.
+    """
     clean_email = (email or "").strip().lower()
+    if not clean_email or not isinstance(password, str) or not password:
+        return None
+
     with _auth_lock:
         users = _load_json_file(USERS_JSON)
         user_record = users.get(clean_email)
+        record_key = clean_email
+        if not user_record:
+            for k, v in users.items():
+                if k.lower() == clean_email or (isinstance(v, dict) and v.get("email", "").lower() == clean_email):
+                    user_record = v
+                    record_key = k
+                    break
 
-    if not user_record:
-        # Run dummy verification to avoid timing attacks
-        _ = hash_password(password, salt=b"dummy_salt_12345")
-        return None
+        if not user_record:
+            # Run dummy verification to avoid timing attacks
+            _ = hash_password(password, salt=b"dummy_salt_12345")
+            return None
 
-    salt_hex = user_record.get("salt")
-    hash_hex = user_record.get("password_hash")
-    if not salt_hex or not hash_hex:
-        # Account was created with Google without a password
-        return None
+        # Check for legacy plaintext password migration (Requirement 8)
+        plaintext_pw = user_record.get("password") or user_record.get("plaintext_password")
+        salt_hex = user_record.get("salt")
+        hash_hex = user_record.get("password_hash")
 
-    if not verify_password(password, salt_hex, hash_hex):
-        return None
+        # If hash_hex was stored without salt and equals password (legacy plaintext in password_hash)
+        if not salt_hex and hash_hex and not plaintext_pw:
+            if secrets.compare_digest(str(hash_hex), password):
+                plaintext_pw = hash_hex
 
-    return AuthUser(
-        user_id=user_record["user_id"],
-        name=user_record.get("name"),
-        email=user_record["email"],
-        google_id=user_record.get("google_id"),
-        created_at=user_record.get("created_at"),
-    )
+        if plaintext_pw and not salt_hex:
+            if not secrets.compare_digest(str(plaintext_pw), password):
+                return None
+            # Migrate plaintext password to secure PBKDF2 hash
+            new_salt_hex, new_hash_hex = hash_password(password)
+            user_record["salt"] = new_salt_hex
+            user_record["password_hash"] = new_hash_hex
+            user_record.pop("password", None)
+            user_record.pop("plaintext_password", None)
+            users[record_key] = user_record
+            _save_json_file(USERS_JSON, users)
+        elif not salt_hex or not hash_hex:
+            # Account has no password set (e.g., Google OAuth only)
+            return None
+        elif not verify_password(password, salt_hex, hash_hex):
+            return None
+
+        return AuthUser(
+            user_id=user_record["user_id"],
+            name=user_record.get("name"),
+            email=user_record["email"],
+            google_id=user_record.get("google_id"),
+            created_at=user_record.get("created_at"),
+        )
 
 
 def get_user_by_email(email: str) -> Optional[AuthUser]:

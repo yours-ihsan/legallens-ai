@@ -9,3 +9,6 @@ __pycache__/
 chroma*/
 *.sqlite3
 node_modules/
+data/users.json
+data/sessions.json
+data/uploads/

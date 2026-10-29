@@ -105,6 +105,14 @@ def test_registration_validation_errors():
     assert res_dup.status_code == 400
     assert "already exists" in res_dup.json()["detail"].lower()
 
+    # Case-insensitive duplicate registration check
+    res_dup_case = client.post(
+        "/api/auth/register",
+        json={"name": "Third User", "email": "COUNSEL@LEGALLENS.AI", "password": "SecurePassword123!"},
+    )
+    assert res_dup_case.status_code == 400
+    assert "already exists" in res_dup_case.json()["detail"].lower()
+
 
 def test_login_success():
     client = TestClient(main.app)
@@ -148,6 +156,171 @@ def test_login_invalid_credentials():
     )
     assert res2.status_code == 401
     assert "invalid email or password" in res2.json()["detail"].lower()
+
+
+def test_login_empty_or_whitespace_credentials():
+    client = TestClient(main.app)
+    client.post(
+        "/api/auth/register",
+        json={"name": "Counsel", "email": "counsel@court.gov", "password": "ValidPassword123!"},
+    )
+
+    # Empty email
+    res_empty_email = client.post(
+        "/api/auth/login",
+        json={"email": "", "password": "ValidPassword123!"},
+    )
+    assert res_empty_email.status_code == 401
+    assert "invalid email or password" in res_empty_email.json()["detail"].lower()
+    assert config.SESSION_COOKIE_NAME not in res_empty_email.cookies
+
+    # Whitespace email
+    res_ws_email = client.post(
+        "/api/auth/login",
+        json={"email": "   ", "password": "ValidPassword123!"},
+    )
+    assert res_ws_email.status_code == 401
+    assert "invalid email or password" in res_ws_email.json()["detail"].lower()
+    assert config.SESSION_COOKIE_NAME not in res_ws_email.cookies
+
+    # Empty password
+    res_empty_pw = client.post(
+        "/api/auth/login",
+        json={"email": "counsel@court.gov", "password": ""},
+    )
+    assert res_empty_pw.status_code == 401
+    assert "invalid email or password" in res_empty_pw.json()["detail"].lower()
+    assert config.SESSION_COOKIE_NAME not in res_empty_pw.cookies
+
+    # Both empty
+    res_both_empty = client.post(
+        "/api/auth/login",
+        json={"email": "", "password": ""},
+    )
+    assert res_both_empty.status_code == 401
+    assert "invalid email or password" in res_both_empty.json()["detail"].lower()
+    assert config.SESSION_COOKIE_NAME not in res_both_empty.cookies
+
+    # Missing fields
+    res_missing = client.post(
+        "/api/auth/login",
+        json={},
+    )
+    assert res_missing.status_code == 401
+    assert "invalid email or password" in res_missing.json()["detail"].lower()
+    assert config.SESSION_COOKIE_NAME not in res_missing.cookies
+
+
+def test_login_establishes_authentication_correctly():
+    client = TestClient(main.app)
+    client.post(
+        "/api/auth/register",
+        json={"name": "Justice Brown", "email": "justice.brown@chambers.gov", "password": "SecurePassword2026!"},
+    )
+
+    # Correct email + correct password = login succeeds
+    login_res = client.post(
+        "/api/auth/login",
+        json={"email": "justice.brown@chambers.gov", "password": "SecurePassword2026!"},
+    )
+    assert login_res.status_code == 200
+    login_data = login_res.json()
+    assert login_data["user"]["email"] == "justice.brown@chambers.gov"
+    assert login_data["user"]["name"] == "Justice Brown"
+    assert "token" in login_data
+    token = login_data["token"]
+    assert config.SESSION_COOKIE_NAME in login_res.cookies
+    cookie_token = login_res.cookies[config.SESSION_COOKIE_NAME]
+
+    # Verify session persists in backend sessions.json
+    session_user = auth.get_session_user(token)
+    assert session_user is not None
+    assert session_user.email == "justice.brown@chambers.gov"
+
+    # Authenticated client with cookie can access /api/auth/me
+    authed_client = TestClient(main.app)
+    authed_client.cookies.set(config.SESSION_COOKIE_NAME, cookie_token)
+    me_res = authed_client.get("/api/auth/me")
+    assert me_res.status_code == 200
+    assert me_res.json()["authenticated"] is True
+    assert me_res.json()["user"]["email"] == "justice.brown@chambers.gov"
+
+    # Authenticated client visiting /login gets redirected to /
+    login_redir = authed_client.get("/login", follow_redirects=False)
+    assert login_redir.status_code == 302
+    assert login_redir.headers["location"] == "/"
+
+    # Authenticated client visiting / gets dashboard (status 200)
+    root_res = authed_client.get("/", follow_redirects=False)
+    assert root_res.status_code == 200
+
+
+def test_login_case_insensitive_email():
+    client = TestClient(main.app)
+    client.post(
+        "/api/auth/register",
+        json={"name": "Advocate", "email": "advocate.senior@bar.org", "password": "PasswordBar2026!"},
+    )
+
+    # Login using uppercase email
+    res = client.post(
+        "/api/auth/login",
+        json={"email": "ADVOCATE.SENIOR@BAR.ORG", "password": "PasswordBar2026!"},
+    )
+    assert res.status_code == 200
+    assert res.json()["user"]["email"] == "advocate.senior@bar.org"
+    assert config.SESSION_COOKIE_NAME in res.cookies
+
+
+def test_login_migrates_legacy_plaintext_password():
+    import json
+    client = TestClient(main.app)
+    # Simulate a legacy user record stored with a plaintext password
+    legacy_users = {
+        "legacy.user@court.gov": {
+            "user_id": "legacy123",
+            "name": "Legacy User",
+            "email": "legacy.user@court.gov",
+            "password": "PlaintextPassword2026!",
+            "salt": None,
+            "password_hash": None,
+            "google_id": None,
+            "created_at": "2026-01-01T00:00:00+00:00",
+        }
+    }
+    config.USERS_JSON.write_text(json.dumps(legacy_users), encoding="utf-8")
+
+    # Incorrect password fails
+    fail_res = client.post(
+        "/api/auth/login",
+        json={"email": "legacy.user@court.gov", "password": "WrongPassword"},
+    )
+    assert fail_res.status_code == 401
+    assert "invalid email or password" in fail_res.json()["detail"].lower()
+
+    # Correct plaintext password succeeds and triggers migration
+    succ_res = client.post(
+        "/api/auth/login",
+        json={"email": "legacy.user@court.gov", "password": "PlaintextPassword2026!"},
+    )
+    assert succ_res.status_code == 200
+    assert succ_res.json()["user"]["email"] == "legacy.user@court.gov"
+    assert config.SESSION_COOKIE_NAME in succ_res.cookies
+
+    # Verify that the database no longer contains plaintext password and now has salt and hash
+    updated_users = json.loads(config.USERS_JSON.read_text(encoding="utf-8"))
+    rec = updated_users["legacy.user@court.gov"]
+    assert "password" not in rec or rec["password"] is None
+    assert rec["salt"] is not None and len(rec["salt"]) == 32
+    assert rec["password_hash"] is not None and len(rec["password_hash"]) == 64
+    assert auth.verify_password("PlaintextPassword2026!", rec["salt"], rec["password_hash"]) is True
+
+    # Subsequent login works via newly stored hash
+    succ_res2 = client.post(
+        "/api/auth/login",
+        json={"email": "legacy.user@court.gov", "password": "PlaintextPassword2026!"},
+    )
+    assert succ_res2.status_code == 200
 
 
 def test_google_auth_registration_enforcement_and_linking():
@@ -423,6 +596,8 @@ def test_route_protection_and_redirects():
     assert res_login.status_code == 200
     assert "LegalLens" in res_login.text
     assert "Continue with Google" in res_login.text
+    assert "Sign In" in res_login.text
+    assert "Create Account" in res_login.text
 
     # 3. Logged in user visiting "/" gets the index.html page
     client.post(
