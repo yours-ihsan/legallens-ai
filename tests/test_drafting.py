@@ -202,7 +202,7 @@ def test_llm_failure_becomes_insufficient(monkeypatch):
 
     monkeypatch.setattr(drafter, "retrieve", lambda *a, **k: [_ev()])
     monkeypatch.setattr(drafter, "run_llm",
-                        lambda _p: (_ for _ in ()).throw(LLMError("provider down")))
+                        lambda _p, **_kwargs: (_ for _ in ()).throw(LLMError("provider down")))
     resp = draft_document("bail_application")
     assert resp.status == "insufficient"
     assert resp.refusal_stage == "system"
@@ -547,7 +547,7 @@ def test_all_four_draft_types_execute_with_stubbed_llm(monkeypatch):
     evidence = [_ev("E1", page=1), _ev("E2", page=2, text=CASE_LOG)]
     prompts = []
 
-    def _llm(prompt):
+    def _llm(prompt, **_kwargs):
         prompts.append(prompt)
         return json.dumps({
             "draft": ("IN THE [COURT NAME — NOT PROVIDED]\n"
@@ -583,7 +583,7 @@ def test_all_four_draft_types_execute_with_stubbed_llm(monkeypatch):
 def test_prompt_lists_missing_fields_as_placeholders(monkeypatch):
     captured = {}
 
-    def _llm(prompt):
+    def _llm(prompt, **_kwargs):
         captured["prompt"] = prompt
         return json.dumps({"draft": "X [E1].", "insufficient": False,
                            "confidence": 0.9, "evidence_used": ["E1"]})

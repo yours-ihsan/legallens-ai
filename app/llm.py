@@ -24,6 +24,8 @@ def run_llm(
     prompt: str,
     model: str = MODEL,
     timeout: int = LLM_TIMEOUT_SECONDS,
+    *,
+    json_mode: bool = False,
 ) -> str:
     """Generate a response using Groq."""
 
@@ -60,24 +62,97 @@ def run_llm(
             max_retries=1,
         )
 
-        response = client.chat.completions.create(
-            model=selected_model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt,
-                }
-            ],
-        )
-
-        content = response.choices[0].message.content
-
-        if not content or not content.strip():
+        # Keep a bounded output budget. Reasoning models can spend part of the
+        # completion budget on internal reasoning, so make the budget explicit
+        # rather than relying on provider defaults.
+        try:
+            max_completion_tokens = int(
+                os.getenv("GROQ_MAX_COMPLETION_TOKENS", "8192")
+            )
+        except ValueError as exc:
             raise LLMError(
-                "Groq returned an empty response."
+                "GROQ_MAX_COMPLETION_TOKENS must be a positive integer."
+            ) from exc
+        if max_completion_tokens < 1:
+            raise LLMError(
+                "GROQ_MAX_COMPLETION_TOKENS must be a positive integer."
             )
 
-        return content.strip()
+        request_options = {
+            "model": selected_model,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_completion_tokens": max_completion_tokens,
+        }
+        if json_mode:
+            request_options["response_format"] = {"type": "json_object"}
+
+            # Groq documents these options for GPT-OSS. Hidden reasoning keeps
+            # internal reasoning out of the content field expected by our JSON
+            # parser, while low effort reserves more of the token budget for
+            # the user-facing structured result.
+            if selected_model.startswith("openai/gpt-oss-"):
+                effort = os.getenv("GROQ_REASONING_EFFORT", "low").strip().lower()
+                if effort not in {"low", "medium", "high"}:
+                    raise LLMError(
+                        "GROQ_REASONING_EFFORT must be low, medium, or high."
+                    )
+                request_options["extra_body"] = {
+                    "reasoning_effort": effort,
+                    "reasoning_format": "hidden",
+                }
+
+        response = client.chat.completions.create(**request_options)
+        choices = getattr(response, "choices", None) or []
+        if not choices:
+            raise LLMError(
+                f"Groq returned no completion choices (model={selected_model})."
+            )
+
+        choice = choices[0]
+        message = getattr(choice, "message", None)
+        content = getattr(message, "content", None) if message else None
+
+        if isinstance(content, list):
+            content = "\n".join(
+                str(getattr(part, "text", "") or "")
+                for part in content
+                if getattr(part, "text", None)
+            )
+
+        # A non-empty response can still be truncated JSON. Detect the token
+        # limit before handing the text to extract_json().
+        finish_reason = getattr(choice, "finish_reason", None) or "unknown"
+        if finish_reason == "length":
+            raise LLMError(
+                "Groq completion reached the token limit "
+                f"(model={selected_model}, finish_reason=length). "
+                "Increase GROQ_MAX_COMPLETION_TOKENS or reduce "
+                "GROQ_REASONING_EFFORT."
+            )
+
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+
+        # Include safe response metadata so the UI/API error tells us whether
+        # the model refused or returned no final text.
+        refusal = getattr(message, "refusal", None) if message else None
+        details = [f"model={selected_model}", f"finish_reason={finish_reason}"]
+        if refusal:
+            details.append(f"refusal={str(refusal)[:180]}")
+
+        usage = getattr(response, "usage", None)
+        completion_details = getattr(usage, "completion_tokens_details", None)
+        reasoning_tokens = getattr(completion_details, "reasoning_tokens", None)
+        if reasoning_tokens is not None:
+            details.append(f"reasoning_tokens={reasoning_tokens}")
+
+        if refusal:
+            hint = "The provider/model refused the request."
+        else:
+            hint = "The provider returned no final text content."
+        raise LLMError(
+            "Groq returned an empty response (" + ", ".join(details) + "). " + hint
+        )
 
     except LLMError:
         raise

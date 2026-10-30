@@ -450,7 +450,7 @@ def research_document(question: str, case_context: Optional[str] = None,
     prompt = build_prompt(packet, classes, evidence, legal_issue,
                           research_type, question, case_context)
     try:
-        data = extract_json(run_llm(prompt))
+        data = extract_json(run_llm(prompt, json_mode=True))
     except (LLMError, ValueError) as exc:
         return _unverified(research_type, legal_issue,
                            f"model error: {exc}", "system")

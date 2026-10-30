@@ -548,7 +548,7 @@ def draft_document(draft_type: str, instructions: Optional[str] = None,
         f"Respond with the JSON object only."
     )
     try:
-        raw = run_llm(prompt)
+        raw = run_llm(prompt, json_mode=True)
         data = extract_json(raw)
     except (LLMError, ValueError) as exc:
         return _insufficient(draft_type, evidence, available, missing,

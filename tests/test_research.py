@@ -112,7 +112,7 @@ def _fail(*_args, **_kwargs):
 
 
 def _llm(data):
-    return lambda _prompt: json.dumps(data)
+    return lambda _prompt, **_kwargs: json.dumps(data)
 
 
 def _good_data(entry: dict | None = None, **overrides) -> dict:
@@ -343,7 +343,7 @@ def test_llm_failure_is_refusal(monkeypatch):
     monkeypatch.setattr(rs, "gather_evidence",
                         lambda *_a, **_k: _gather(evidence, meta))
 
-    def _boom(_prompt):
+    def _boom(_prompt, **_kwargs):
         raise LLMError("provider down")
     monkeypatch.setattr(rs, "run_llm", _boom)
     resp = rs.research_document("What law applies to theft?")
