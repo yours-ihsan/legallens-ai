@@ -33,9 +33,25 @@ Refusal stages (reported as refusal_stage, all return the exact REFUSAL string):
 import re
 
 from .config import BAND_HIGH, BAND_MEDIUM, LOW_FLOOR
+from .evaluation.metrics import (
+    check_claim,
+    content_tokens,
+    critical_tokens,
+    extract_claims,
+    is_abstention,
+    normalize,
+)
 from .llm import LLMError, extract_json, run_llm
 from .models import AnswerResponse, Citation, Confidence, Evidence
-from .premise import CONTRADICTED, NOT_FOUND, check_premises
+from .premise import (
+    CONTRADICTED,
+    NOT_FOUND,
+    STOPWORDS,
+    _IDENTITY_DENIAL_RE,
+    _PERSON_RE,
+    _sentences,
+    check_premises,
+)
 from .retriever import retrieve
 
 REFUSAL = "Insufficient evidence in the provided documents."
@@ -47,12 +63,21 @@ STRICT RULES:
 2. Never invent facts, laws, statutes, case names, legal citations, article numbers, party names, dates, or amounts.
 3. Never write page numbers or filenames inside the answer text. You may reference evidence with [E1]-style markers, and you must list every supporting evidence ID in "citations".
 4. Every factual sentence must be supported by at least one cited evidence ID.
-5. FALSE-PREMISE RULE: the question may contain a false or unsupported assumption. If the evidence contradicts the assumption, DO NOT refuse. Give a grounded correction that states what the sources actually say, in the form "The sources state X, not Y." and cite the supporting evidence IDs. Example: if the question claims liability is capped at USD 1,000 but the evidence says USD 50,000, answer that the sources state USD 50,000 per contract year, not USD 1,000, and cite the evidence for USD 50,000.
+5. CONTRADICTION & FALSE-PREMISE RULE: the question may contain a false, unsupported, or contradicted allegation or assumption.
+   - If the evidence contradicts the allegation, or if the question asks whether the document proves or establishes an allegation that is contradicted or not established:
+     You MUST explicitly state that the document does not establish it (e.g. "No. The document does not establish that [person] [allegation].").
+     Explain what the evidence actually records (citing the absence of witness identification, no property recovered, or that access alone does not prove theft), citing the supporting evidence IDs [E#].
+     NEVER state, agree, or imply that a contradicted or unproven allegation is established or supported.
+   - For other contradicted assumptions, provide a grounded correction: "The sources state X, not Y." and cite the supporting evidence IDs.
+   - DO NOT refuse to answer solely because the question contains a false premise. Correct the false premise using the available evidence, explain what the evidence actually establishes, and include citations. Never invent facts or citations.
 6. REFUSAL RULE: set "insufficient" to true ONLY when the evidence says nothing relevant to the question. When refusing, set "citations" to [] and set "answer" to exactly: {REFUSAL}
 7. "confidence" is your 0-1 confidence that the evidence fully supports the answer.
 8. Respond with ONLY a JSON object and no other text, using exactly this schema:
 {{"answer": string, "insufficient": boolean, "confidence": number, "citations": ["E1", ...]}}
-9. A PREMISE CHECK block may appear above the evidence. Its verdicts are computed by the system from the evidence and are authoritative: open with a correction for every CONTRADICTED assumption, and never assert a NOT_FOUND assumption as fact."""
+9. A PREMISE CHECK block may appear above the evidence. Its verdicts are computed by the system from the evidence and are authoritative:
+   - For every CONTRADICTED allegation, OPEN with an explicit correction that the document does not establish the claim, and explain using the source evidence.
+   - Never assert a NOT_FOUND assumption as fact.
+   - You may rely on SUPPORTED assumptions with citations."""
 
 
 def premise_block(premises: list) -> str:
@@ -65,9 +90,10 @@ def premise_block(premises: list) -> str:
         lines.append(f'- ASSUMPTION "{p["assumption"]}" — {p["verdict"]}{ref}')
     lines += [
         "Follow these verdicts exactly:",
-        '* CONTRADICTED: OPEN the answer with a correction of the form '
-        '"The sources state X, not Y [E#]", where X is what the evidence '
-        "actually records (cite the contradicting evidence ID).",
+        "* CONTRADICTED: The evidence contradicts this assumption. OPEN the answer by explicitly stating "
+        'that the document does not establish this claim (e.g. "No. The document does not establish that [X] [E#]" '
+        'or "The sources state X, not Y [E#]"), and explain what the evidence actually records using the source facts. '
+        "NEVER assert or imply that a contradicted assumption is true or established.",
         "* NOT_FOUND: the evidence does not establish this — never assert it "
         "as fact; state what the evidence does record instead, with citations.",
         "* SUPPORTED: you may rely on it and cite the supporting evidence ID.",

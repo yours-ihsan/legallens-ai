@@ -82,6 +82,7 @@ _NP_DENY = {
     "case", "question", "matter", "document", "documents", "source", "sources",
     "following", "above", "below", "answer", "file", "text", "context", "user",
     "system", "thing", "things", "situation", "page", "pages", "list", "form",
+    "record", "records", "material", "evidence", "proof",
 }
 
 _SENT_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
@@ -128,6 +129,10 @@ def extract_assumptions(question: str) -> list[str]:
         head = re.sub(r"[^a-z]", "", words[-1].lower())
         if not head or head in _NP_DENY:
             continue
+        if any(re.sub(r"[^a-z]", "", w.lower()) in _NP_DENY for w in words):
+            continue
+        if head in {"prove", "proves", "show", "shows", "state", "states", "establish", "establishes", "conclude", "concludes"}:
+            continue
         if not content_tokens(frag):     # pure meta/function words
             continue
         found.append(frag)
@@ -166,21 +171,23 @@ _PERSON_RE = re.compile(
     r"perpetrator|assailant|suspect\w*)\b"
     r"|\b[A-Z][a-z]{2,}(?:\s+[A-Z][A-Za-z]{2,})?\b")
 
-# Absence statements that deny responsibility / identity / charge.
+# Absence statements that deny responsibility / identity / charge / recovery / proof.
 _IDENTITY_DENIAL_RE = re.compile(
-    r"\b(?:does|do|did)\s+not\s+(?:establish|identify|state|show|prove|record|"
-    r"name|confirm|support|indicate)"
-    r"|\bno\s+(?:evidence|record|material|information|witness|proof)"
+    r"\b(?:does|do|did|can|could|would)\s+not\s+(?:establish|identify|state|show|prove|record|"
+    r"name|confirm|support|indicate|demonstrate)"
+    r"|\bno\s+(?:evidence|record|material|information|witness|witnesses|proof|stolen\s+property|property)"
     r"|\bnot\s+(?:established|identified|named|charged|arrested|convicted|"
-    r"specified|recorded)\b"
-    r"|\b(?:was|is|were|are)\s+not\s+(?:arrested|charged|convicted|identified|"
-    r"named)\b", re.I)
+    r"specified|recorded|recovered|found)\b"
+    r"|\b(?:was|is|were|are|has\s+been|have\s+been)\s+not\s+(?:arrested|charged|convicted|identified|"
+    r"named|recovered|found)\b"
+    r"|\b(?:by\s+itself|alone)\s+does\s+not\s+(?:prove|establish|show)\b"
+    r"|\bdoes\s+not\s+(?:by\s+itself|alone)\s+(?:prove|establish|show)\b", re.I)
 
 _OFFENCE_DOMAIN_RE = re.compile(
     r"\b(?:theft|stole|stolen|steal|took|taking|taken|commit\w*|accus\w*|"
     r"arrest\w*|charg\w*|detain\w*|custody|guilt\w*|offence|offense|crime|"
     r"robbery|murder|fraud|cheat\w*|assault\w*|kill\w*|bail|liabilit\w*|"
-    r"liable|negligen\w*)\b", re.I)
+    r"liable|negligen\w*|laptop|sleeve|property|belonging|missing)\b", re.I)
 
 
 def _is_guilt_presumption(assumption: str) -> bool:
@@ -274,6 +281,10 @@ def _contradiction_chunk(assumption: str, evidence: list[Evidence],
             if guilt:
                 if _IDENTITY_DENIAL_RE.search(sent) and _OFFENCE_DOMAIN_RE.search(sent):
                     return ev
+                for m in _PERSON_RE.finditer(assumption):
+                    person = m.group(0).strip()
+                    if len(person) >= 3 and person.lower() in sent.lower() and _IDENTITY_DENIAL_RE.search(sent):
+                        return ev
                 continue
             shared = a_tokens & set(content_tokens(sent))
             if len(shared) >= 2:

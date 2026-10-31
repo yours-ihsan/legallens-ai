@@ -59,15 +59,20 @@ STOPWORDS = {
 ABSTENTION_PATTERNS = [
     r"\bnot (?:enough|sufficient|available|specified|mentioned|provided|stated|recorded|present|included|listed)\b",
     r"\binsufficient (?:information|evidence|context|data|detail)\b",
-    r"\b(?:does|do|did|is|are|was|were) not (?:contain|include|specify|mention|provide|state|identify|establish|record|show|say|list|indicate|answer)\b",
+    r"\b(?:does|do|did|is|are|was|were) not (?:contain|include|specify|mention|provide|state|identify|establish|record|show|say|list|indicate|answer|prove|demonstrate|link|connect)\b",
     r"\b(?:doesn't|don't|didn't|isn't|aren't|wasn't|weren't|can't|couldn't|won't)\b",
-    r"\bno (?:information|mention|record|details|such|answer|evidence|clause|entry|data)\b",
-    r"\b(?:cannot|can not|could not) be (?:determined|found|answered|established|identified|confirmed)\b",
-    r"\b(?:unable|not possible) to (?:answer|determine|identify|establish|confirm)\b",
+    r"\bno (?:information|mention|record|details|such|answer|evidence|clause|entry|data|witness|witnesses|proof|stolen\s+property|property)\b",
+    r"\bno\s+(?:witness|witnesses|person|individual|suspect)\s+(?:identif\w*|states?|saw|names?|observed?)\b",
+    r"\b(?:cannot|can not|could not) be (?:determined|found|answered|established|identified|confirmed|proved)\b",
+    r"\b(?:unable|not possible) to (?:answer|determine|identify|establish|confirm|prove)\b",
     r"\bi (?:do not|don't) know\b",
     r"\bnot (?:in|within|part of) the (?:provided )?(?:context|document|evidence|file|text|record)\b",
     r"\b(?:the )?(?:context|document|evidence|file|record) (?:does|do|did|is|are|was|were) not\b",
     r"\bnothing (?:in|about)\b",
+    r"\b(?:has|have|had|was|were)\s+not\s+been\s+(?:recovered|found|seized)\b",
+    r"\b(?:by\s+itself|alone)\s+does\s+not\s+(?:prove|establish|show)\b",
+    r"\bdoes\s+not\s+(?:by\s+itself|alone)\s+(?:prove|establish|show)\b",
+    r"\bno (?:evidence|proof|record|material)\s+links?\b",
 ]
 _ABSTENTION_RE = re.compile("|".join(f"(?:{p})" for p in ABSTENTION_PATTERNS), re.I)
 
