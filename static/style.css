@@ -1967,6 +1967,9 @@ a.src-link:hover { text-decoration: underline; }
   margin-bottom: 18px;
   animation: authFadeIn 0.2s ease;
 }
+.auth-alert[hidden] {
+  display: none !important;
+}
 
 @keyframes authFadeIn {
   from { opacity: 0; transform: translateY(-4px); }
